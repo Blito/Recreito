@@ -1,0 +1,5 @@
+# Build directory
+build/
+
+# Third party libs directory
+lib/
