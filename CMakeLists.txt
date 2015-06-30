@@ -24,12 +24,17 @@ set(RECREITO_THIRD_PARTY_LIBS_DIR "${CMAKE_SOURCE_DIR}/lib")
 	include_directories("${RECREITO_THIRD_PARTY_LIBS_DIR}/glm/")
 
 # SDL2
-	set(SDL2 "${RECREITO_THIRD_PARTY_LIBS_DIR}/SDL2-2.0.3/build/"
+	set(SDL2 "${RECREITO_THIRD_PARTY_LIBS_DIR}/SDL2-2.0.3/build/debug/"
 								CACHE PATH "Path where SDL2 was BUILT")
 	set(SDL2_INCLUDE_DIR "${RECREITO_THIRD_PARTY_LIBS_DIR}/SDL2-2.0.3/include")
 	find_package(SDL2 REQUIRED)
 	include_directories(${SDL2_INCLUDE_DIR})
 	target_link_libraries(recreito ${SDL2_LIBRARY})
+
+# OpenGL
+	find_package(OpenGL REQUIRED)
+	include_directories(${OPENGL_INCLUDE_DIRS})
+	target_link_libraries(recreito ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
 
 # Link executable with library's libraries
 #target_link_libraries(recreito recreito_lib)
