@@ -31,6 +31,10 @@ set(RECREITO_THIRD_PARTY_LIBS_DIR "${CMAKE_SOURCE_DIR}/lib")
 	include_directories(${SDL2_INCLUDE_DIR})
 	target_link_libraries(recreito ${SDL2_LIBRARY})
 
+# GLEW
+	include_directories("${RECREITO_THIRD_PARTY_LIBS_DIR}/glew/include")
+	target_link_libraries(recreito "${RECREITO_THIRD_PARTY_LIBS_DIR}/glew/build/mingw/lib/libglew32.a")
+
 # OpenGL
 	find_package(OpenGL REQUIRED)
 	include_directories(${OPENGL_INCLUDE_DIRS})
