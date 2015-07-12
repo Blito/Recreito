@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 
 namespace Core {
 
@@ -27,8 +28,9 @@ namespace Core {
 
         struct Vertex
         {
-            Vertex(glm::vec3 p) : position(p) {}
+            Vertex(glm::vec3 p, glm::vec4 c) : position(p), color(c) {}
             glm::vec3 position;
+            glm::vec4 color;
         };
 
         /**

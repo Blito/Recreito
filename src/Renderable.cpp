@@ -49,9 +49,12 @@ bool Renderable::loadToGPU(const std::vector<Renderable::Vertex> & model)
     glBufferData(GL_ARRAY_BUFFER, sizeof(Renderable::Vertex) * 3, &model[0], GL_STATIC_DRAW);
     vbos.push_back(vbo);
 
-    constexpr unsigned int attribNumber = 0;
-    glEnableVertexAttribArray(attribNumber);
-    glVertexAttribPointer(attribNumber, 3, GL_FLOAT, GL_FALSE, sizeof(Renderable::Vertex), (void*)0);
+    constexpr unsigned int positionAttrib = 0;
+    constexpr unsigned int colorAttrib = 1;
+    glEnableVertexAttribArray(positionAttrib);
+    glVertexAttribPointer(positionAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(Renderable::Vertex), (void*)0);
+    glEnableVertexAttribArray(colorAttrib);
+    glVertexAttribPointer(colorAttrib, 4, GL_FLOAT, GL_FALSE, sizeof(Renderable::Vertex), (void*)12); // 3 floats * 4 bytes per float
 
     return true;
 }
@@ -59,9 +62,12 @@ bool Renderable::loadToGPU(const std::vector<Renderable::Vertex> & model)
 std::vector<Renderable::Vertex> Renderable::loadModel(const char * file) const
 {
     std::vector<Renderable::Vertex> model;
-    model.push_back(Renderable::Vertex(glm::vec3(-0.25, -0.25, 0.0)));
-    model.push_back(Renderable::Vertex(glm::vec3( 0.25, -0.25, 0.0)));
-    model.push_back(Renderable::Vertex(glm::vec3( 0.25,  0.25, 0.0)));
+    model.push_back(Renderable::Vertex(glm::vec3(-0.25, -0.25, 0.0),
+                                       glm::vec4( 1, 0, 0, 1)));
+    model.push_back(Renderable::Vertex(glm::vec3( 0.25, -0.25, 0.0),
+                                       glm::vec4( 0, 1, 0, 1)));
+    model.push_back(Renderable::Vertex(glm::vec3( 0.25,  0.25, 0.0),
+                                       glm::vec4( 0, 0, 1, 1)));
 
     return model;
 }
