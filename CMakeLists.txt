@@ -15,7 +15,7 @@ set(RECREITO_THIRD_PARTY_LIBS_DIR "${CMAKE_SOURCE_DIR}/lib")
         "src/*.h"
         "src/[!main]*.cpp"
     )
-	#add_library(recreito_lib STATIC ${recreito_SRC})
+	add_library(recreito_lib STATIC ${recreito_SRC})
 	add_executable(recreito src/main.cpp)
 
 ## Third party libraries
@@ -29,19 +29,19 @@ set(RECREITO_THIRD_PARTY_LIBS_DIR "${CMAKE_SOURCE_DIR}/lib")
 	set(SDL2_INCLUDE_DIR "${RECREITO_THIRD_PARTY_LIBS_DIR}/SDL2-2.0.3/include")
 	find_package(SDL2 REQUIRED)
 	include_directories(${SDL2_INCLUDE_DIR})
-	target_link_libraries(recreito ${SDL2_LIBRARY})
+	target_link_libraries(recreito_lib ${SDL2_LIBRARY})
 
 # GLEW
 	include_directories("${RECREITO_THIRD_PARTY_LIBS_DIR}/glew/include")
-	target_link_libraries(recreito "${RECREITO_THIRD_PARTY_LIBS_DIR}/glew/build/mingw/lib/libglew32.a")
+	target_link_libraries(recreito_lib "${RECREITO_THIRD_PARTY_LIBS_DIR}/glew/build/mingw/lib/libglew32.a")
 
 # OpenGL
 	find_package(OpenGL REQUIRED)
 	include_directories(${OPENGL_INCLUDE_DIRS})
-	target_link_libraries(recreito ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+	target_link_libraries(recreito_lib ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
 
 # Link executable with library's libraries
-#target_link_libraries(recreito recreito_lib)
+target_link_libraries(recreito recreito_lib)
 
 # Unit tests
 #add_subdirectory(${CMAKE_SOURCE_DIR}/test)
