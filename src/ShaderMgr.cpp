@@ -1,17 +1,26 @@
-#include "ShaderLoader.h"
+#include "ShaderMgr.h"
 
 #include <fstream>
 #include <vector>
 #include <iostream>
 
-using namespace Core;
+using namespace Mgrs;
 
-GLuint ShaderLoader::createProgram(const char * vertexShaderFileName,
-                                   const char * fragmentShaderFileName)
+GLuint ShaderMgr::createProgram(const std::string & vertexShaderFileName,
+                                const std::string & fragmentShaderFileName)
 {
+    const std::string programName = vertexShaderFileName + "_" + fragmentShaderFileName;
+
+    // check for existing program
+    auto p = programs.find(programName);
+    if (p != programs.end())
+    {
+        return p->second; // return program ID (GLuint)
+    }
+
     //read the shader files and save the code
-    std::string vertex_shader_code = readShader(vertexShaderFileName);
-    std::string fragment_shader_code = readShader(fragmentShaderFileName);
+    std::string && vertex_shader_code = readShader(vertexShaderFileName);
+    std::string && fragment_shader_code = readShader(fragmentShaderFileName);
  
     GLuint vertex_shader = createShader(GL_VERTEX_SHADER, vertex_shader_code, "vertex shader");
     GLuint fragment_shader = createShader(GL_FRAGMENT_SHADER, fragment_shader_code, "fragment shader");
@@ -35,20 +44,22 @@ GLuint ShaderLoader::createProgram(const char * vertexShaderFileName,
         std::cout << "Shader Loader : LINK ERROR" << std::endl << &program_log[0] << std::endl;
         return 0;
     }
-   
+
+    programs[programName] = program;
+
     return program;
  }
 
-std::string ShaderLoader::readShader(const char * fileName)
+std::string ShaderMgr::readShader(const std::string & fileName)
 {
     //TODO: Check for a better way to read a file.
     //TODO: Improve error handling.
     std::string shaderCode;
-    std::ifstream file(fileName, std::ios::in);
+    std::ifstream file(fileName.c_str(), std::ios::in);
  
     if(!file.good())
     {
-        std::cout<< "Can't read file " << fileName << std::endl;
+        std::cout << "Can't read file " << fileName << std::endl;
         return "";
     }
  
@@ -61,16 +72,16 @@ std::string ShaderLoader::readShader(const char * fileName)
     return shaderCode;
 }
 
-GLuint ShaderLoader::createShader(GLenum shaderType,
-                                  std::string source,
-                                  const char * shaderName)
+GLuint ShaderMgr::createShader(GLenum shaderType,
+                               const std::string & source,
+                               const std::string & shaderName)
 {
     int compile_result = 0;
  
     GLuint shader = glCreateShader(shaderType);
     const char * shader_code_ptr = source.c_str();
     const int shader_code_size = source.size();
- 
+
     glShaderSource(shader, 1, &shader_code_ptr, &shader_code_size);
     glCompileShader(shader);
  

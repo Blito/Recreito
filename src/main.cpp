@@ -6,13 +6,14 @@
 
 #include <iostream>
 
-#include "ShaderLoader.h"
+#include "ShaderMgr.h"
 #include "Renderable.h"
 
 GLuint program;
 GLuint vertex_array_object;
 
 Core::Renderable * triangle;
+Mgrs::ShaderMgr * shaderMgr;
 
 void init()
 {
@@ -21,7 +22,7 @@ void init()
     triangle = new Core::Renderable("");
 
     //load and compile shaders
-    Core::ShaderLoader shaderLoader;
+    shaderMgr = new Mgrs::ShaderMgr();
     program = shaderLoader.createProgram("../src/shaders/Vertex_Shader.glsl",
                                         "../src/shaders/Fragment_Shader.glsl");
 
@@ -32,6 +33,11 @@ void init()
     glBindVertexArray(vertex_array_object);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void shutdown()
+{
+    delete[] shaderMgr;
 }
 
 int main(int argc, char *argv[])
