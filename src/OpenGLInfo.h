@@ -1,7 +1,7 @@
 #ifndef OPENGL_INFO_H
 #define OPENGL_INFO_H
 
-namespace OpenGL
+namespace Rendering
 {
     struct WindowInfo
     {

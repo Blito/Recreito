@@ -23,7 +23,7 @@ void init()
 
     //load and compile shaders
     shaderMgr = new Mgrs::ShaderMgr();
-    program = shaderLoader.createProgram("../src/shaders/Vertex_Shader.glsl",
+    program = shaderMgr->createProgram("../src/shaders/Vertex_Shader.glsl",
                                         "../src/shaders/Fragment_Shader.glsl");
 
     std::cout << "Program " << program << " created." << std::endl;
