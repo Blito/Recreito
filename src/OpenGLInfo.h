@@ -1,22 +1,24 @@
 #ifndef OPENGL_INFO_H
 #define OPENGL_INFO_H
 
+#include <string>
+
 namespace Rendering
 {
     struct WindowInfo
     {
-        std::string name;
+        std::string title;
         int width, height;
-        int position_x, position_y;
+        int x, y;
         bool isReshapeable;
 
         WindowInfo(std::string name,
                    int width, int height,
                    int x, int y,
                    bool reshapeable) :
-            name(name),
+            title(name),
             width(width), height(height),
-            position_x(x), position_y(y),
+            x(x), y(y),
             isReshapeable(reshapeable)
         {}
     };

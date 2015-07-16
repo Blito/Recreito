@@ -11,6 +11,8 @@ namespace Mgrs
     class ShaderMgr
     {
     public:
+        ~ShaderMgr();
+
         GLuint createProgram(const std::string & vertexShaderFileName,
                              const std::string & fragmentShaderFileName);
 

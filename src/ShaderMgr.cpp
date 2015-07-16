@@ -6,6 +6,14 @@
 
 using namespace Mgrs;
 
+ShaderMgr::~ShaderMgr()
+{
+    for (auto program : programs)
+    {
+        glDeleteProgram(program.second);
+    }
+}
+
 GLuint ShaderMgr::createProgram(const std::string & vertexShaderFileName,
                                 const std::string & fragmentShaderFileName)
 {
