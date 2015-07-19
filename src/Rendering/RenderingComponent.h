@@ -1,28 +1,32 @@
-#ifndef RENDERABLE_H
-#define RENDERABLE_H
+#ifndef RENDERINGCOMPONENT_H
+#define RENDERINGCOMPONENT_H
 
 #include <vector>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
-namespace Core {
+namespace Rendering {
 
     /**
-     * @brief The Renderable class is responsible for loading the representation
-     * of a renderable object, generating, binding and populating the GPU buffers
-     * accordingly.
+     * @brief The RenderingComponent class is responsible for loading the
+     * representation of a renderable object, generating, binding and populating
+     * the GPU buffers accordingly.
      */
-    class Renderable
+    class RenderingComponent
     {
     public:
-        Renderable(const char * modelFile);
-        ~Renderable();
+        RenderingComponent();
+        ~RenderingComponent();
+
+        void init();
 
         /**
          * @brief enable Binds the GPU buffers to this object.
          * @note Does not check correct initialization of the object.
          */
         void enable() const;
+
+        void draw() const;
 
     protected:
 
@@ -44,15 +48,16 @@ namespace Core {
         /**
          * @brief loadModel Loads the model from a file.
          */
-        std::vector<Vertex> loadModel(const char * file) const;
+        virtual std::vector<Vertex> loadModel(const char * file) const = 0;
 
         unsigned int vao;
         std::vector<unsigned int> vbos;
+        unsigned int vertices = 0;
         bool modelLoaded = false;
         bool gpuLoaded = false;
 
     };
 
-}
+} // end Rendering
 
-#endif // RENDERABLE_H
+#endif // RENDERINGCOMPONENT_H

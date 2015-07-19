@@ -1,7 +1,7 @@
 #include "Renderer.h"
 
-#include "Renderable.h"
-#include "ShaderMgr.h"
+#include "../Rendering/RenderingComponent.h"
+#include "../Mgrs/ShaderMgr.h"
 
 using namespace Rendering;
 
@@ -29,36 +29,18 @@ bool Renderer::init()
 
     glEnable(GL_DEPTH_TEST);
 
-    triangle = new Core::Renderable("");
-
     shaderMgr = new Mgrs::ShaderMgr();
     program = shaderMgr->createProgram("../src/shaders/Vertex_Shader.glsl",
                                        "../src/shaders/Fragment_Shader.glsl");
 
     //generate the vertex array
-    glGenVertexArrays(1, &vertex_array_object);
-    glBindVertexArray(vertex_array_object);
+    //glGenVertexArrays(1, &vertex_array_object);
+    //glBindVertexArray(vertex_array_object);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     initialized = sdl && glew;
     return initialized;
-}
-
-bool Renderer::shutdown()
-{
-    if (!initialized)
-    {
-        return true;
-    }
-
-    delete shaderMgr;
-
-    SDL_GL_DeleteContext(context);
-    SDL_Quit();
-
-    deinitialized = true;
-    return deinitialized;
 }
 
 void Renderer::update(float millis)
@@ -78,16 +60,36 @@ void Renderer::update(float millis)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(1.0, 0.0, 0.0, 1.0);//clear red
 
-    // bind buffers
-    triangle->enable();
-
     //use the created program
     glUseProgram(program);
 
-    //draw 3 vertices as triangles
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    for (auto object : toRender)
+    {
+        object->draw();
+    }
 
     SDL_GL_SwapWindow(window);
+}
+
+bool Renderer::shutdown()
+{
+    if (!initialized)
+    {
+        return true;
+    }
+
+    delete shaderMgr;
+
+    SDL_GL_DeleteContext(context);
+    SDL_Quit();
+
+    deinitialized = true;
+    return deinitialized;
+}
+
+void Renderer::addObjectToRender(RenderingComponent * object)
+{
+    toRender.push_back(object);
 }
 
 bool Renderer::initSDL(const WindowInfo & windowInfo,

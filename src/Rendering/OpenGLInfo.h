@@ -40,6 +40,6 @@ namespace Rendering
 
     };
 
-} // end OpenGL
+} // end Rendering
 
 #endif // OPENGL_INFO_H

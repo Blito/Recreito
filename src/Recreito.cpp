@@ -1,7 +1,9 @@
 #include "Recreito.h"
 
-#include "OpenGLInfo.h"
-#include "Renderer.h"
+#include "Rendering/OpenGLInfo.h"
+#include "Rendering/Renderer.h"
+#include "Core/Triangle.h"
+#include "Core/Square.h"
 
 Recreito::Recreito()
     : renderer(nullptr)
@@ -43,10 +45,23 @@ bool Recreito::init()
 
     initialized = renderer->init();
 
+    initScene();
+
     return initialized;
 }
 
 bool Recreito::shutdown()
 {
     delete renderer;
+
+    return true;
+}
+
+void Recreito::initScene()
+{
+    Core::Triangle * triangle= new Core::Triangle();
+    renderer->addObjectToRender(triangle->renderingComponent);
+
+    Core::Square * square = new Core::Square();
+    renderer->addObjectToRender(square->renderingComponent);
 }

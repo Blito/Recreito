@@ -26,6 +26,9 @@ protected:
     bool deinitialized = false;
 
     Rendering::Renderer * renderer;
+
+private:
+    void initScene();
 };
 
 #endif // RECREITO_H

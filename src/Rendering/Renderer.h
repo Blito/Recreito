@@ -9,18 +9,16 @@
 
 #include "OpenGLInfo.h"
 
+#include <vector>
+
 namespace Mgrs
 {
     class ShaderMgr;
 }
 
-namespace Core
-{
-    class Renderable;
-}
-
 namespace Rendering
 {
+    class RenderingComponent;
     class Renderer
     {
     public:
@@ -29,9 +27,10 @@ namespace Rendering
         ~Renderer();
 
         bool init();
+        void update(float millis);
         bool shutdown();
 
-        void update(float millis);
+        void addObjectToRender(RenderingComponent * object);
 
         bool isQuit() const { return shouldQuit; }
 
@@ -48,14 +47,13 @@ namespace Rendering
 
         Mgrs::ShaderMgr * shaderMgr;
 
+        std::vector<RenderingComponent *> toRender;
+
     private:
         bool initSDL(const WindowInfo & windowInfo, const ContextInfo & contextInfo);
         bool initGLEW();
 
-        // This should not be here eventually
         unsigned int program;
-        unsigned int vertex_array_object;
-        Core::Renderable * triangle;
     };
 } // end Rendering
 
