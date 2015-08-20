@@ -1,7 +1,9 @@
 #ifndef RENDERINGCOMPONENT_H
 #define RENDERINGCOMPONENT_H
 
+#include <string>
 #include <vector>
+#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
@@ -18,7 +20,7 @@ namespace Rendering {
         RenderingComponent();
         ~RenderingComponent();
 
-        void init();
+        void init(const std::string & textureFile);
 
         /**
          * @brief enable Binds the GPU buffers to this object.
@@ -32,9 +34,11 @@ namespace Rendering {
 
         struct Vertex
         {
-            Vertex(glm::vec3 p, glm::vec4 c) : position(p), color(c) {}
+            Vertex(glm::vec3 p, glm::vec4 c, glm::vec2 t) :
+                position(p), color(c), texture(t) {}
             glm::vec3 position;
             glm::vec4 color;
+            glm::vec2 texture;
         };
 
         /**
@@ -55,6 +59,8 @@ namespace Rendering {
         unsigned int vertices = 0;
         bool modelLoaded = false;
         bool gpuLoaded = false;
+
+        class Texture * texture = nullptr;
 
     };
 

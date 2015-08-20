@@ -10,16 +10,13 @@ namespace Rendering
     protected:
         std::vector<RenderingComponent::Vertex> loadModel(const char * file) const override
         {
-            std::vector<RenderingComponent::Vertex> model;
-            model.push_back(RenderingComponent::Vertex(glm::vec3(-0.25, 0.5, 0.0),//pos
-                                         glm::vec4( 1, 0, 0, 1)));   //color
-            model.push_back(RenderingComponent::Vertex(glm::vec3(-0.25, 0.75, 0.0),//pos
-                                         glm::vec4( 0, 0, 0, 1)));   //color
-            model.push_back(RenderingComponent::Vertex(glm::vec3(0.25, 0.5, 0.0),  //pos
-                                         glm::vec4( 0, 1, 0, 1)));   //color
-            //4th vertex
-            model.push_back(RenderingComponent::Vertex(glm::vec3(0.25, 0.75, 0.0),//pos
-                                         glm::vec4(0, 0, 1, 1)));   //color
+            std::vector<RenderingComponent::Vertex> model =
+            {    /*   position     */  /*   color  */  /*text*/
+                {{ -0.25,  0.5, 0.0 }, { 1, 0, 0, 1 }, { 0, 1 }},
+                {{ -0.25, 0.75, 0.0 }, { 0, 0, 0, 1 }, { 0, 0 }},
+                {{  0.25,  0.5, 0.0 }, { 0, 1, 0, 1 }, { 1, 1 }},
+                {{  0.25, 0.75, 0.0 }, { 0, 0, 1, 1 }, { 1, 0 }}
+            };
 
             return model;
         }
@@ -28,6 +25,7 @@ namespace Rendering
 
 
 #include "GameObject.h"
+#include "../Rendering/Texture.h"
 
 namespace Core
 {

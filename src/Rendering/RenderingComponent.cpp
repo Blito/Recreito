@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+#include "Texture.h"
+
 using namespace Rendering;
 
 RenderingComponent::RenderingComponent()
@@ -17,9 +19,14 @@ RenderingComponent::~RenderingComponent()
     glDeleteBuffers(vbos.size(), &vbos[0]); // what if multiple where created?
 }
 
-void RenderingComponent::init()
+void RenderingComponent::init(const std::string & textureFile)
 {
     auto model = loadModel("");
+
+    if (!textureFile.empty())
+    {
+        texture = new Texture(textureFile);
+    }
 
     vertices = model.size();
 
@@ -39,11 +46,20 @@ void RenderingComponent::init()
 void RenderingComponent::enable() const
 {
     glBindVertexArray(vao);
+
+    if (texture)
+    {
+        texture->enable();
+    }
+    else
+    {
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
 }
 
 void RenderingComponent::draw() const
 {
-    glBindVertexArray(vao);
+    enable();
 
     //draw 3 vertices as triangles
     glDrawArrays(GL_TRIANGLE_STRIP, 0, vertices);
@@ -62,10 +78,13 @@ bool RenderingComponent::loadToGPU(const std::vector<RenderingComponent::Vertex>
 
     constexpr unsigned int positionAttrib = 0;
     constexpr unsigned int colorAttrib = 1;
+    constexpr unsigned int textAttrib = 2;
     glEnableVertexAttribArray(positionAttrib);
     glVertexAttribPointer(positionAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(RenderingComponent::Vertex), (void*)0);
     glEnableVertexAttribArray(colorAttrib);
-    glVertexAttribPointer(colorAttrib, 4, GL_FLOAT, GL_FALSE, sizeof(RenderingComponent::Vertex), (void*)12); // 3 floats * 4 bytes per float
+    glVertexAttribPointer(colorAttrib, 4, GL_FLOAT, GL_FALSE, sizeof(RenderingComponent::Vertex), (void*)(3*sizeof(float)));
+    glEnableVertexAttribArray(textAttrib);
+    glVertexAttribPointer(textAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(RenderingComponent::Vertex), (void*)(7*sizeof(float)));
 
     return true;
 }

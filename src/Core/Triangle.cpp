@@ -5,6 +5,6 @@ using namespace Core;
 Triangle::Triangle()
 {
     renderingComponent = new Rendering::TriangleModel();
-    renderingComponent->init();
+    renderingComponent->init("");
 }
 

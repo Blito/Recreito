@@ -33,6 +33,13 @@ set(RECREITO_THIRD_PARTY_LIBS_DIR "${CMAKE_SOURCE_DIR}/lib")
 	include_directories(${SDL2_INCLUDE_DIR})
 	target_link_libraries(recreito_lib ${SDL2_LIBRARY})
 
+# SOIL
+	set(SOIL "${RECREITO_THIRD_PARTY_LIBS_DIR}/soil/build"
+								CACHE PATH "Path where SOIL was BUILT (without ending slash)")
+	set(SOIL_INCLUDE_DIR "${RECREITO_THIRD_PARTY_LIBS_DIR}/soil/src")
+	include_directories(${SOIL_INCLUDE_DIR})
+	target_link_libraries(recreito_lib ${SOIL}/libSOIL.a)
+
 # GLEW
 	include_directories("${RECREITO_THIRD_PARTY_LIBS_DIR}/glew/include")
 	target_link_libraries(recreito_lib "${RECREITO_THIRD_PARTY_LIBS_DIR}/glew/build/mingw/lib/libglew32.a")
