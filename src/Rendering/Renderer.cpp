@@ -1,5 +1,7 @@
 #include "Renderer.h"
 
+#include <iostream>
+
 #include "../Rendering/RenderingComponent.h"
 #include "../Mgrs/ShaderMgr.h"
 
@@ -30,12 +32,14 @@ bool Renderer::init()
     glEnable(GL_DEPTH_TEST);
 
     shaderMgr = new Mgrs::ShaderMgr();
-    program = shaderMgr->createProgram("../src/shaders/Vertex_Shader.glsl",
-                                       "../src/shaders/Fragment_Shader.glsl");
 
-    //generate the vertex array
-    //glGenVertexArrays(1, &vertex_array_object);
-    //glBindVertexArray(vertex_array_object);
+    shaderMgr->createProgram("Simple",
+                             "../src/shaders/Vertex_Shader.glsl",
+                             "../src/shaders/Simple_Fragment_Shader.glsl");
+
+    shaderMgr->createProgram("Textured",
+                             "../src/shaders/Vertex_Shader.glsl",
+                             "../src/shaders/Fragment_Shader.glsl");
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -60,12 +64,15 @@ void Renderer::update(float millis)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(1.0, 0.0, 0.0, 1.0);//clear red
 
-    //use the created program
-    glUseProgram(program);
-
-    for (auto object : toRender)
+    for (auto shader_object : toRender)
     {
-        object->draw();
+        // enable shader program
+        glUseProgram(shader_object.first);
+
+        for (auto object : shader_object.second)
+        {
+            object->draw();
+        }
     }
 
     SDL_GL_SwapWindow(window);
@@ -89,7 +96,19 @@ bool Renderer::shutdown()
 
 void Renderer::addObjectToRender(RenderingComponent * object)
 {
-    toRender.push_back(object);
+    auto shader = shaderMgr->isValid(object->getShaderProgram());
+    if (shader != 0)
+    {
+        toRender[shader].push_back(object);
+    }
+    else
+    {
+        // TODO: Improve error handling
+        std::cout << "ShaderMgr: ERROR: Trying to add rendering "
+                  << "object with invalid shader program (name: "
+                  << object->getShaderProgram() << ")"
+                  << std::endl;
+    }
 }
 
 bool Renderer::initSDL(const WindowInfo & windowInfo,

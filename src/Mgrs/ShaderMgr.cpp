@@ -14,17 +14,24 @@ ShaderMgr::~ShaderMgr()
     }
 }
 
-GLuint ShaderMgr::createProgram(const std::string & vertexShaderFileName,
-                                const std::string & fragmentShaderFileName)
+GLuint ShaderMgr::isValid(const std::string & programName) const
 {
-    const std::string programName = vertexShaderFileName + "_" + fragmentShaderFileName;
-
-    // check for existing program
     auto p = programs.find(programName);
     if (p != programs.end())
     {
         return p->second; // return program ID (GLuint)
     }
+    return 0;
+}
+
+GLuint ShaderMgr::createProgram(const std::string & programName,
+                                const std::string & vertexShaderFileName,
+                                const std::string & fragmentShaderFileName)
+{
+    // check for existing program
+    GLuint program = isValid(programName);
+    if (program != 0)
+        return program;
 
     //read the shader files and save the code
     std::string && vertex_shader_code = readShader(vertexShaderFileName);
@@ -35,7 +42,7 @@ GLuint ShaderMgr::createProgram(const std::string & vertexShaderFileName,
  
     int link_result = 0;
     //create the program handle, attatch the shaders and link it
-    GLuint program = glCreateProgram();
+    program = glCreateProgram();
     glAttachShader(program, vertex_shader);
     glAttachShader(program, fragment_shader);
  

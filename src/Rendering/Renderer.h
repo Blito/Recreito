@@ -10,6 +10,7 @@
 #include "OpenGLInfo.h"
 
 #include <vector>
+#include <map>
 
 namespace Mgrs
 {
@@ -47,13 +48,11 @@ namespace Rendering
 
         Mgrs::ShaderMgr * shaderMgr;
 
-        std::vector<RenderingComponent *> toRender;
+        std::map<GLuint, std::vector<RenderingComponent*>> toRender;
 
     private:
         bool initSDL(const WindowInfo & windowInfo, const ContextInfo & contextInfo);
         bool initGLEW();
-
-        unsigned int program;
     };
 } // end Rendering
 

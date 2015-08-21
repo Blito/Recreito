@@ -7,6 +7,9 @@ namespace Rendering
 {
     class TriangleModel: public Rendering::RenderingComponent
     {
+    public:
+        TriangleModel() : RenderingComponent("Simple") {}
+
     protected:
         std::vector<RenderingComponent::Vertex> loadModel(const char * file) const override
         {

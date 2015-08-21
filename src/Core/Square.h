@@ -5,8 +5,11 @@
 
 namespace Rendering
 {
-    class SquareModel: public Rendering::RenderingComponent
+    class SquareModel : public Rendering::RenderingComponent
     {
+    public:
+        SquareModel() : RenderingComponent("Textured") {}
+
     protected:
         std::vector<RenderingComponent::Vertex> loadModel(const char * file) const override
         {

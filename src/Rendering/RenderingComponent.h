@@ -30,7 +30,10 @@ namespace Rendering {
 
         void draw() const;
 
+        const std::string & getShaderProgram() const;
+
     protected:
+        RenderingComponent(const std::string & shaderProgramName);
 
         struct Vertex
         {
@@ -61,6 +64,8 @@ namespace Rendering {
         bool gpuLoaded = false;
 
         class Texture * texture = nullptr;
+
+        const std::string shaderProgram;
 
     };
 

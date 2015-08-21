@@ -19,6 +19,11 @@ RenderingComponent::~RenderingComponent()
     glDeleteBuffers(vbos.size(), &vbos[0]); // what if multiple where created?
 }
 
+RenderingComponent::RenderingComponent(const std::string & shaderProgramName)
+    : shaderProgram(shaderProgramName)
+{
+}
+
 void RenderingComponent::init(const std::string & textureFile)
 {
     auto model = loadModel("");
@@ -87,4 +92,9 @@ bool RenderingComponent::loadToGPU(const std::vector<RenderingComponent::Vertex>
     glVertexAttribPointer(textAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(RenderingComponent::Vertex), (void*)(7*sizeof(float)));
 
     return true;
+}
+
+const std::string & RenderingComponent::getShaderProgram() const
+{
+    return shaderProgram;
 }

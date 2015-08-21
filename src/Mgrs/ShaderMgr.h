@@ -13,7 +13,10 @@ namespace Mgrs
     public:
         ~ShaderMgr();
 
-        GLuint createProgram(const std::string & vertexShaderFileName,
+        GLuint isValid(const std::string & programName) const;
+
+        GLuint createProgram(const std::string & programName,
+                             const std::string & vertexShaderFileName,
                              const std::string & fragmentShaderFileName);
 
     private:
@@ -23,6 +26,8 @@ namespace Mgrs
                             const std::string & shaderName);
 
         std::map<std::string, GLuint> programs;
+
+
     };
 }
 
