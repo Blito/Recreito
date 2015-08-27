@@ -20,6 +20,7 @@ namespace Mgrs
 namespace Rendering
 {
     class RenderingComponent;
+    class Shader;
     class Renderer
     {
     public:
@@ -35,6 +36,8 @@ namespace Rendering
 
         bool isQuit() const { return shouldQuit; }
 
+        const Mgrs::ShaderMgr * getShaderMgr() const;
+
     protected:
         const WindowInfo & windowInfo;
         class SDL_Window * window;
@@ -48,7 +51,7 @@ namespace Rendering
 
         Mgrs::ShaderMgr * shaderMgr;
 
-        std::map<GLuint, std::vector<RenderingComponent*>> toRender;
+        std::map<Shader*, std::vector<RenderingComponent*>> toRender;
 
     private:
         bool initSDL(const WindowInfo & windowInfo, const ContextInfo & contextInfo);

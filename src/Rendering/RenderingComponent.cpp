@@ -5,12 +5,19 @@
 
 #include <iostream>
 
+#include "../Core/GameObject.h"
+#include "../Mgrs/ShaderMgr.h"
+#include "Renderer.h"
 #include "Texture.h"
+
+#include <glm/gtc/matrix_transform.hpp>
 
 using namespace Rendering;
 
-RenderingComponent::RenderingComponent()
+RenderingComponent::RenderingComponent(const Core::GameObject & parent)
+    : position(parent.position)
 {
+
 }
 
 RenderingComponent::~RenderingComponent()
@@ -19,12 +26,16 @@ RenderingComponent::~RenderingComponent()
     glDeleteBuffers(vbos.size(), &vbos[0]); // what if multiple where created?
 }
 
-RenderingComponent::RenderingComponent(const std::string & shaderProgramName)
-    : shaderProgram(shaderProgramName)
+RenderingComponent::RenderingComponent(const Core::GameObject & parent,
+                                       const std::string & shaderProgramName)
+    : shaderProgramName(shaderProgramName),
+      position(parent.position)
 {
+
 }
 
-void RenderingComponent::init(const std::string & textureFile)
+void RenderingComponent::init(const Renderer & renderer,
+                              const std::string & textureFile)
 {
     auto model = loadModel("");
 
@@ -41,6 +52,8 @@ void RenderingComponent::init(const std::string & textureFile)
         gpuLoaded = loadToGPU(model);
     }
 
+    shaderProgram = renderer.getShaderMgr()->getProgram(shaderProgramName);
+
     //TODO: Improve error handling.
     if (!modelLoaded)
         std::cout << "Could not load model." << std::endl;
@@ -48,7 +61,7 @@ void RenderingComponent::init(const std::string & textureFile)
         std::cout << "Could not load GPU." << std::endl;
 }
 
-void RenderingComponent::enable() const
+void RenderingComponent::enable()
 {
     glBindVertexArray(vao);
 
@@ -64,10 +77,8 @@ void RenderingComponent::enable() const
 
 void RenderingComponent::draw() const
 {
-    enable();
-
     //draw 3 vertices as triangles
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, vertices);
+    glDrawArrays(GL_TRIANGLES, 0, vertices);
 }
 
 bool RenderingComponent::loadToGPU(const std::vector<RenderingComponent::Vertex> & model)
@@ -96,5 +107,5 @@ bool RenderingComponent::loadToGPU(const std::vector<RenderingComponent::Vertex>
 
 const std::string & RenderingComponent::getShaderProgram() const
 {
-    return shaderProgram;
+    return shaderProgramName;
 }

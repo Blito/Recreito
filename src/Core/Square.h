@@ -3,12 +3,16 @@
 
 #include "../Rendering/RenderingComponent.h"
 
+#include "GameObject.h"
+
 namespace Rendering
 {
+    class Renderer;
     class SquareModel : public Rendering::RenderingComponent
     {
     public:
-        SquareModel() : RenderingComponent("Textured") {}
+        SquareModel(const Core::GameObject & parent)
+            : RenderingComponent(parent, "Textured") {}
 
     protected:
         std::vector<RenderingComponent::Vertex> loadModel(const char * file) const override
@@ -27,7 +31,6 @@ namespace Rendering
 } // end Rendering
 
 
-#include "GameObject.h"
 #include "../Rendering/Texture.h"
 
 namespace Core
@@ -35,7 +38,7 @@ namespace Core
     class Square : public GameObject
     {
     public:
-        Square();
+        Square(Rendering::Renderer & renderer);
     };
 } // end Core
 

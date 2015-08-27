@@ -4,6 +4,7 @@
 
 #include "../Rendering/RenderingComponent.h"
 #include "../Mgrs/ShaderMgr.h"
+#include "../Rendering/Shader.h"
 
 using namespace Rendering;
 
@@ -41,6 +42,10 @@ bool Renderer::init()
                              "../src/shaders/Vertex_Shader.glsl",
                              "../src/shaders/Fragment_Shader.glsl");
 
+    shaderMgr->createProgram("3D Simple",
+                             "../src/shaders/3D_Vertex_Shader.glsl",
+                             "../src/shaders/Simple_Fragment_Shader.glsl");
+
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     initialized = sdl && glew;
@@ -62,15 +67,16 @@ void Renderer::update(float millis)
     }
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(1.0, 0.0, 0.0, 1.0);//clear red
+    glClearColor(0.3, 0.5, 0.5, 1.0);
 
     for (auto shader_object : toRender)
     {
         // enable shader program
-        glUseProgram(shader_object.first);
+        glUseProgram(shader_object.first->id());
 
         for (auto object : shader_object.second)
         {
+            object->enable();
             object->draw();
         }
     }
@@ -96,8 +102,8 @@ bool Renderer::shutdown()
 
 void Renderer::addObjectToRender(RenderingComponent * object)
 {
-    auto shader = shaderMgr->isValid(object->getShaderProgram());
-    if (shader != 0)
+    auto shader = shaderMgr->getProgram(object->getShaderProgram());
+    if (shader)
     {
         toRender[shader].push_back(object);
     }
@@ -109,6 +115,11 @@ void Renderer::addObjectToRender(RenderingComponent * object)
                   << object->getShaderProgram() << ")"
                   << std::endl;
     }
+}
+
+const Mgrs::ShaderMgr * Renderer::getShaderMgr() const
+{
+    return shaderMgr;
 }
 
 bool Renderer::initSDL(const WindowInfo & windowInfo,

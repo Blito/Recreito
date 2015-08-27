@@ -6,6 +6,11 @@
 #include <string>
 #include <map>
 
+namespace Rendering
+{
+    class Shader;
+}
+
 namespace Mgrs
 {
     class ShaderMgr
@@ -13,21 +18,17 @@ namespace Mgrs
     public:
         ~ShaderMgr();
 
-        GLuint isValid(const std::string & programName) const;
+        Rendering::Shader * getProgram(const std::string & programName) const;
 
-        GLuint createProgram(const std::string & programName,
-                             const std::string & vertexShaderFileName,
-                             const std::string & fragmentShaderFileName);
+        GLuint getProgramID(const std::string & programName) const;
+
+        Rendering::Shader * createProgram(
+                                const std::string & programName,
+                                const std::string & vertexShaderFileName,
+                                const std::string & fragmentShaderFileName);
 
     private:
-        std::string readShader(const std::string & fileName);
-        GLuint createShader(GLenum shaderType,
-                            const std::string & source,
-                            const std::string & shaderName);
-
-        std::map<std::string, GLuint> programs;
-
-
+        std::map<std::string, Rendering::Shader*> programs;
     };
 }
 

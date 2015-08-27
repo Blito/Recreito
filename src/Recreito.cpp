@@ -4,6 +4,7 @@
 #include "Rendering/Renderer.h"
 #include "Core/Triangle.h"
 #include "Core/Square.h"
+#include "Core/Plane.h"
 
 Recreito::Recreito()
     : renderer(nullptr)
@@ -59,9 +60,12 @@ bool Recreito::shutdown()
 
 void Recreito::initScene()
 {
-    Core::Triangle * triangle= new Core::Triangle();
-    renderer->addObjectToRender(triangle->renderingComponent);
+//    Core::Triangle * triangle= new Core::Triangle(*renderer);
+//    renderer->addObjectToRender(triangle->renderingComponent);
 
-    Core::Square * square = new Core::Square();
-    renderer->addObjectToRender(square->renderingComponent);
+//    Core::Square * square = new Core::Square(*renderer);
+//    renderer->addObjectToRender(square->renderingComponent);
+
+    Core::Plane * plane = new Core::Plane(*renderer);
+    renderer->addObjectToRender(plane->renderingComponent);
 }

@@ -7,8 +7,15 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
-namespace Rendering {
+#include <glm/glm.hpp>
 
+namespace Core
+{
+    class GameObject;
+}
+
+namespace Rendering
+{
     /**
      * @brief The RenderingComponent class is responsible for loading the
      * representation of a renderable object, generating, binding and populating
@@ -17,23 +24,25 @@ namespace Rendering {
     class RenderingComponent
     {
     public:
-        RenderingComponent();
+        RenderingComponent(const Core::GameObject & parent);
         ~RenderingComponent();
 
-        void init(const std::string & textureFile);
+        void init(const class Renderer & renderer,
+                  const std::string & textureFile);
 
         /**
          * @brief enable Binds the GPU buffers to this object.
          * @note Does not check correct initialization of the object.
          */
-        void enable() const;
+        virtual void enable();
 
         void draw() const;
 
         const std::string & getShaderProgram() const;
 
     protected:
-        RenderingComponent(const std::string & shaderProgramName);
+        RenderingComponent(const Core::GameObject & parent,
+                           const std::string & shaderProgramName);
 
         struct Vertex
         {
@@ -64,8 +73,13 @@ namespace Rendering {
         bool gpuLoaded = false;
 
         class Texture * texture = nullptr;
+        const class Shader * shaderProgram = nullptr;
 
-        const std::string shaderProgram;
+        std::string shaderProgramName;
+
+        const glm::vec3 & position;
+
+        glm::mat4 model, view, proj;
 
     };
 

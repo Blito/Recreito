@@ -3,12 +3,16 @@
 
 #include "../Rendering/RenderingComponent.h"
 
+#include "GameObject.h"
+
 namespace Rendering
 {
+    class Renderer;
     class TriangleModel: public Rendering::RenderingComponent
     {
     public:
-        TriangleModel() : RenderingComponent("Simple") {}
+        TriangleModel(const Core::GameObject & parent)
+            : RenderingComponent(parent, "Simple") {}
 
     protected:
         std::vector<RenderingComponent::Vertex> loadModel(const char * file) const override
@@ -25,15 +29,12 @@ namespace Rendering
     };
 } // end Rendering
 
-
-#include "GameObject.h"
-
 namespace Core
 {
     class Triangle : public GameObject
     {
     public:
-        Triangle();
+        Triangle(Rendering::Renderer & renderer);
     };
 } // end Core
 

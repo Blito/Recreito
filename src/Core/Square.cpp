@@ -1,10 +1,12 @@
 #include "Square.h"
 
+#include "../Rendering/Renderer.h"
+
 using namespace Core;
 
-Square::Square()
+Square::Square(Rendering::Renderer & renderer)
 {
-    renderingComponent = new Rendering::SquareModel();
-    renderingComponent->init("container.jpg");
+    renderingComponent = new Rendering::SquareModel(*this);
+    renderingComponent->init(renderer, "container.jpg");
 }
 
