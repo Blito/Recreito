@@ -5,6 +5,7 @@
 
 #include <map>
 #include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
 
 namespace Rendering
 {
@@ -13,12 +14,13 @@ namespace Rendering
     class Camera : public Core::GameObject
     {
     public:
+        Camera();
         void enable(const Shader * shader);
 
-    protected:
-        // Cache: Shader program -> location of view uniform
-        std::map<const Shader*, int> shader_viewLoc;
+        void lookAt(float x, float y, float z);
 
+    protected:
+        glm::vec3 target, up;
         glm::mat4 view;
 
     private:

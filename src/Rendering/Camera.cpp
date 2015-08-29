@@ -10,11 +10,22 @@
 
 using namespace Rendering;
 
+Camera::Camera()
+{
+    up = glm::vec3(0.0f, 1.0f, 0.0f);
+    target = glm::vec3(0.0f, 0.0f, 0.0f);
+}
+
 void Camera::enable(const Shader * shader)
 {
     GLint viewLoc = shader->getUniform("view");
 
-    view = glm::translate(glm::mat4(), position);
+    view = glm::lookAt(position, target, up);
 
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+}
+
+void Camera::lookAt(float x, float y, float z)
+{
+    target.x = x; target.y = y; target.z = z;
 }
