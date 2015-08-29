@@ -14,11 +14,6 @@ Shader::Shader(Mgrs::ShaderMgr & shaderMgr,
                const std::string & fragmentShaderFileName)
     : shaderMgr(shaderMgr)
 {
-    // check for existing program
-//    GLuint program = isValid(programName);
-//    if (program != 0)
-//        return program;
-
     //read the shader files and save the code
     std::string && vertex_shader_code = readShaderFile(vertexShaderFileName);
     std::string && fragment_shader_code = readShaderFile(fragmentShaderFileName);
@@ -50,6 +45,24 @@ Shader::Shader(Mgrs::ShaderMgr & shaderMgr,
 GLuint Shader::id() const
 {
     return program_id;
+}
+
+GLint Shader::getUniform(const std::string & uniformName) const
+{
+    auto uniform = uniforms.find(uniformName);
+    if (uniform == uniforms.end())
+        std::cout << "Uniform not found." << std::endl;
+    return uniform == uniforms.end() ? 0 : uniform->second;
+}
+
+void Shader::enable()
+{
+    glUseProgram(program_id);
+
+    if (!uniformsLoaded)
+    {
+        uniformsLoaded = loadUniformIndices();
+    }
 }
 
 std::string Shader::readShaderFile(const std::string & fileName) const
@@ -100,4 +113,24 @@ GLuint Shader::createShader(GLenum shaderType,
     }
 
     return shader;
+}
+
+bool Shader::loadUniformIndices()
+{
+    //Get number of active uniforms
+    GLint activeUniforms;
+    glGetProgramiv(program_id, GL_ACTIVE_UNIFORMS, &activeUniforms);
+
+    if (activeUniforms == 0)
+        return false;
+
+    // Iterate over active uniforms, query their names and fill cache
+    char uniformName[50];
+    for (int uniform = 0; uniform < activeUniforms; uniform++)
+    {
+        glGetActiveUniformName(program_id, uniform, 50, nullptr, uniformName);
+        uniforms[std::string(uniformName)] = uniform;
+    }
+
+    return true;
 }

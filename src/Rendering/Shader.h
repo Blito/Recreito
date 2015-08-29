@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 
 #include <string>
+#include <unordered_map>
 
 namespace Mgrs
 {
@@ -23,17 +24,28 @@ namespace Rendering
 
         GLuint id() const;
 
-        void use() const;
+        GLint getUniform(const std::string & uniformName) const;
+
+        void enable();
 
     protected:
         GLuint program_id = 0;
         Mgrs::ShaderMgr & shaderMgr;
+        std::unordered_map<std::string, GLint> uniforms;
 
     private:
         std::string readShaderFile(const std::string & fileName) const;
         GLuint createShader(GLenum shaderType,
                             const std::string & source,
                             const std::string & shaderName);
+
+        /**
+         * @brief loadUniformIndices Queries OpenGL for the uniforms locations
+         * and stores them in the uniforms cache.
+         * @return true if at least one active uniform was found
+         */
+        bool loadUniformIndices();
+        bool uniformsLoaded = false;
 
     };
 } // end Rendering

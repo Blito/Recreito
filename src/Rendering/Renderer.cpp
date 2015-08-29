@@ -2,9 +2,13 @@
 
 #include <iostream>
 
-#include "../Rendering/RenderingComponent.h"
+#include "RenderingComponent.h"
+#include "Camera.h"
 #include "../Mgrs/ShaderMgr.h"
 #include "../Rendering/Shader.h"
+
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 using namespace Rendering;
 
@@ -13,7 +17,9 @@ Renderer::Renderer(const WindowInfo & windowInfo, const ContextInfo & contextInf
       contextInfo(contextInfo),
       shaderMgr(nullptr)
 {
-
+    fovDeg = 45.0f;
+    nearPlane = 0.1f;
+    farPlane = 100.0f;
 }
 
 Renderer::~Renderer()
@@ -46,7 +52,15 @@ bool Renderer::init()
                              "../src/shaders/3D_Vertex_Shader.glsl",
                              "../src/shaders/Simple_Fragment_Shader.glsl");
 
+    camera = new Camera();
+    camera->position = glm::vec3(0, 0, -3);
+
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    proj = glm::perspective(fovDeg,
+                            (GLfloat)windowInfo.width / (GLfloat)windowInfo.height, // Ratio
+                            nearPlane,
+                            farPlane);
 
     initialized = sdl && glew;
     return initialized;
@@ -69,10 +83,14 @@ void Renderer::update(float millis)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.3, 0.5, 0.5, 1.0);
 
-    for (auto shader_object : toRender)
+    for (auto & shader_object : toRender)
     {
         // enable shader program
-        glUseProgram(shader_object.first->id());
+        shader_object.first->enable();
+
+        setProjMatrix(shader_object.first);
+
+        camera->enable(shader_object.first);
 
         for (auto object : shader_object.second)
         {
@@ -120,6 +138,13 @@ void Renderer::addObjectToRender(RenderingComponent * object)
 const Mgrs::ShaderMgr * Renderer::getShaderMgr() const
 {
     return shaderMgr;
+}
+
+void Renderer::setProjMatrix(Shader * shader)
+{
+    GLint projLoc = shader->getUniform(projUniformName);
+
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
 }
 
 bool Renderer::initSDL(const WindowInfo & windowInfo,

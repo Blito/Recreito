@@ -11,6 +11,9 @@
 
 #include <vector>
 #include <map>
+#include <unordered_map>
+
+#include <glm/mat4x4.hpp>
 
 namespace Mgrs
 {
@@ -39,6 +42,8 @@ namespace Rendering
         const Mgrs::ShaderMgr * getShaderMgr() const;
 
     protected:
+        void setProjMatrix(Shader * shader);
+
         const WindowInfo & windowInfo;
         class SDL_Window * window;
 
@@ -51,9 +56,15 @@ namespace Rendering
 
         Mgrs::ShaderMgr * shaderMgr;
 
+        class Camera * camera;
         std::map<Shader*, std::vector<RenderingComponent*>> toRender;
 
+        glm::mat4 proj;
+        float fovDeg, nearPlane, farPlane;
+
     private:
+        static constexpr const char * projUniformName = "projection";
+
         bool initSDL(const WindowInfo & windowInfo, const ContextInfo & contextInfo);
         bool initGLEW();
     };
