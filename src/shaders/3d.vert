@@ -19,7 +19,8 @@ void main()
     textCoord = in_textCoord;
     normal = in_normal;
 
-    fragPos = vec3(model * vec4(in_position, 1.0));
+    vec4 worldCoord = model * vec4(in_position, 1.0);
+    fragPos = vec3(worldCoord);
 
-    gl_Position = projection * view * model * vec4(in_position, 1.0); //w is 1.0
+    gl_Position = projection * view * worldCoord;
 }
