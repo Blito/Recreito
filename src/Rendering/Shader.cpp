@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <iostream>
+#include <sstream>
 
 #include "../Mgrs/ShaderMgr.h"
 
@@ -67,22 +68,10 @@ void Shader::enable()
 
 std::string Shader::readShaderFile(const std::string & fileName) const
 {
-    //TODO: Check for a better way to read a file.
-    //TODO: Improve error handling.
-    std::string shaderCode;
-    std::ifstream file(fileName.c_str(), std::ios::in);
-
-    if(!file.good())
-    {
-        std::cout << "Can't read file " << fileName << std::endl;
-        return "";
-    }
-
-    file.seekg(0, std::ios::end);
-    shaderCode.resize((unsigned int)file.tellg());
-    file.seekg(0, std::ios::beg);
-    file.read(&shaderCode[0], shaderCode.size());
-    file.close();
+    std::ifstream in(fileName);
+    std::stringstream buffer;
+    buffer << in.rdbuf();
+    std::string shaderCode(buffer.str());
 
     return shaderCode;
 }
@@ -104,6 +93,9 @@ GLuint Shader::createShader(GLenum shaderType,
     glGetShaderiv(shader, GL_COMPILE_STATUS, &compile_result);
     if (compile_result == GL_FALSE)
     {
+
+        std::cout << " shader: " << shaderName << std::endl << shader_code_ptr << std::endl;
+
         int info_log_length = 0;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &info_log_length);
         std::vector<char> shader_log(info_log_length);
