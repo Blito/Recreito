@@ -8,10 +8,10 @@
 namespace Rendering
 {
     class Renderer;
-    class PlaneModel : public Rendering::RenderingComponent
+    class CubeModel : public Rendering::RenderingComponent
     {
     public:
-        PlaneModel(const Core::GameObject & parent)
+        CubeModel(const Core::GameObject & parent)
             : RenderingComponent(parent, "3D Simple") {}
 
         void enable() override;
@@ -74,10 +74,10 @@ namespace Rendering
 
 namespace Core
 {
-    class Plane : public GameObject
+    class Cube : public GameObject
     {
     public:
-        Plane(Rendering::Renderer & renderer);
+        Cube(Rendering::Renderer & renderer);
     };
 } // end Core
 

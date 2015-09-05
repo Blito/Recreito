@@ -4,7 +4,9 @@
 #include "Rendering/Renderer.h"
 #include "Core/Triangle.h"
 #include "Core/Square.h"
-#include "Core/Plane.h"
+#include "Core/Cube.h"
+
+#include <cmath>
 
 Recreito::Recreito()
     : renderer(nullptr)
@@ -30,6 +32,9 @@ void Recreito::run()
     while (!renderer->isQuit())
     {
         renderer->update(1000);
+
+        magicI += 0.005f;
+        cube->position = glm::vec3(5 * std::sin(magicI), 0.0f, 5 * std::cos(magicI));
     }
 
     shutdown();
@@ -66,6 +71,6 @@ void Recreito::initScene()
 //    Core::Square * square = new Core::Square(*renderer);
 //    renderer->addObjectToRender(square->renderingComponent);
 
-    Core::Plane * plane = new Core::Plane(*renderer);
-    renderer->addObjectToRender(plane->renderingComponent);
+    cube = new Core::Cube(*renderer);
+    renderer->addObjectToRender(cube->renderingComponent);
 }

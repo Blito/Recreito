@@ -1,4 +1,4 @@
-#include "Plane.h"
+#include "Cube.h"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -12,11 +12,13 @@
 
 namespace Rendering
 {
-    void PlaneModel::enable()
+    void CubeModel::enable()
     {
         // Bind VAO and Texture
         RenderingComponent::enable();
 
+        model = glm::translate(glm::mat4(1), position);
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
         model = glm::rotate(model, 0.01f, glm::vec3(1.0f, 1.0f, 0.0f));
 
         // Update uniforms
@@ -27,9 +29,9 @@ namespace Rendering
 
 using namespace Core;
 
-Plane::Plane(Rendering::Renderer & renderer)
+Cube::Cube(Rendering::Renderer & renderer)
 {
-    renderingComponent = new Rendering::PlaneModel(*this);
+    renderingComponent = new Rendering::CubeModel(*this);
     renderingComponent->init(renderer, "container.jpg");
 }
 

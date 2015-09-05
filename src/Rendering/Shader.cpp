@@ -51,7 +51,7 @@ GLint Shader::getUniform(const std::string & uniformName) const
 {
     auto uniform = uniforms.find(uniformName);
     if (uniform == uniforms.end())
-        std::cout << "Uniform not found." << std::endl;
+        std::cout << "Uniform " << uniformName << " not found." << std::endl;
     return uniform == uniforms.end() ? 0 : uniform->second;
 }
 

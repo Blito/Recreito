@@ -57,10 +57,13 @@ namespace Rendering
         Mgrs::ShaderMgr * shaderMgr;
 
         class Camera * camera;
+        class Light * light;
         std::map<Shader*, std::vector<RenderingComponent*>> toRender;
 
         glm::mat4 proj;
         float fovDeg, nearPlane, farPlane;
+
+        float magicI = 0.0f;
 
     private:
         static constexpr const char * projUniformName = "projection";

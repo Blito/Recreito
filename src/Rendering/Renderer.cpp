@@ -4,6 +4,7 @@
 
 #include "RenderingComponent.h"
 #include "Camera.h"
+#include "Light.h"
 #include "../Mgrs/ShaderMgr.h"
 #include "../Rendering/Shader.h"
 
@@ -50,10 +51,18 @@ bool Renderer::init()
 
     shaderMgr->createProgram("3D Simple",
                              "../src/shaders/3d.v.glsl",
+                             "../src/shaders/color_light.f.glsl");
+
+    shaderMgr->createProgram("Light",
+                             "../src/shaders/3d.v.glsl",
                              "../src/shaders/color.f.glsl");
 
     camera = new Camera();
-    camera->position = glm::vec3(0, 0, -3);
+    camera->position = glm::vec3(3, 3, -10);
+
+    light = new Light(*this);
+    light->color = glm::vec3(1.0f, 1.0f, 1.0f);
+    addObjectToRender(light->renderingComponent);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -91,6 +100,8 @@ void Renderer::update(float millis)
         setProjMatrix(shader_object.first);
 
         camera->enable(shader_object.first);
+
+        light->enable(shader_object.first);
 
         for (auto object : shader_object.second)
         {

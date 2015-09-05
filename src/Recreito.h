@@ -6,6 +6,10 @@ namespace Rendering
 {
     class Renderer;
 }
+namespace Core
+{
+    class Cube;
+}
 
 /**
  * @brief The Recreito class is the starting point for any application.
@@ -27,8 +31,12 @@ protected:
 
     Rendering::Renderer * renderer;
 
+    Core::Cube * cube = nullptr;
+
 private:
     void initScene();
+
+    float magicI = 0.0f;
 };
 
 #endif // RECREITO_H
