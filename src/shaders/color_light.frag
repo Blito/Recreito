@@ -1,4 +1,4 @@
-#version 430 core
+#version 330 core
 layout(location = 0) out vec4 out_color;
 
 in vec4 objectColor;
@@ -17,7 +17,6 @@ void main(void)
 	vec3 lightDir = normalize(lightPos - fragPos);
 	float diffuseStrength = max(dot(norm, lightDir), 0.0);
 	vec4 diffuseLight = diffuseStrength * lightColor;
-
 
 	// Ambient light component
 	float ambientStrength = 0.2f;

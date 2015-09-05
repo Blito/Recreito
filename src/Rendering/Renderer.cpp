@@ -42,20 +42,20 @@ bool Renderer::init()
     shaderMgr = new Mgrs::ShaderMgr();
 
     shaderMgr->createProgram("Simple",
-                             "../src/shaders/2d.v.glsl",
-                             "../src/shaders/color.f.glsl");
+                             "../src/shaders/2d.vert",
+                             "../src/shaders/color.frag");
 
     shaderMgr->createProgram("Textured",
-                             "../src/shaders/2d.v.glsl",
-                             "../src/shaders/texture.f.glsl");
+                             "../src/shaders/2d.vert",
+                             "../src/shaders/texture.frag");
 
     shaderMgr->createProgram("3D Simple",
-                             "../src/shaders/3d.v.glsl",
-                             "../src/shaders/color_light.f.glsl");
+                             "../src/shaders/3d.vert",
+                             "../src/shaders/color_light.frag");
 
     shaderMgr->createProgram("Light",
-                             "../src/shaders/3d.v.glsl",
-                             "../src/shaders/color.f.glsl");
+                             "../src/shaders/3d.vert",
+                             "../src/shaders/color.frag");
 
     camera = new Camera();
     camera->position = glm::vec3(3, 3, -8);
