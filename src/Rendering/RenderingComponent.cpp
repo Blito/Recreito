@@ -93,14 +93,17 @@ bool RenderingComponent::loadToGPU(const std::vector<RenderingComponent::Vertex>
     vbos.push_back(vbo);
 
     constexpr unsigned int positionAttrib = 0;
-    constexpr unsigned int colorAttrib = 1;
-    constexpr unsigned int textAttrib = 2;
+    constexpr unsigned int colorAttrib    = 1;
+    constexpr unsigned int textAttrib     = 2;
+    constexpr unsigned int normalAttrib   = 3;
     glEnableVertexAttribArray(positionAttrib);
     glVertexAttribPointer(positionAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(RenderingComponent::Vertex), (void*)0);
     glEnableVertexAttribArray(colorAttrib);
     glVertexAttribPointer(colorAttrib, 4, GL_FLOAT, GL_FALSE, sizeof(RenderingComponent::Vertex), (void*)(3*sizeof(float)));
     glEnableVertexAttribArray(textAttrib);
     glVertexAttribPointer(textAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(RenderingComponent::Vertex), (void*)(7*sizeof(float)));
+    glEnableVertexAttribArray(normalAttrib);
+    glVertexAttribPointer(normalAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(RenderingComponent::Vertex), (void*)(9*sizeof(float)));
 
     return true;
 }

@@ -34,6 +34,8 @@ Light::Light(Renderer & renderer)
 void Light::enable(const Shader * shader)
 {
     GLint lightColorLoc = shader->getUniform("lightColor");
-
     glUniform4f(lightColorLoc, color.x, color.y, color.z, 1.0f);
+
+    GLint lightPosLoc = shader->getUniform("lightPos");
+    glUniform3f(lightPosLoc, position.x, position.y, position.z);
 }

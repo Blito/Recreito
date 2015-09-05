@@ -58,7 +58,7 @@ bool Renderer::init()
                              "../src/shaders/color.f.glsl");
 
     camera = new Camera();
-    camera->position = glm::vec3(3, 3, -10);
+    camera->position = glm::vec3(3, 3, -8);
 
     light = new Light(*this);
     light->color = glm::vec3(1.0f, 1.0f, 1.0f);

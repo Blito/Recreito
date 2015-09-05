@@ -18,7 +18,7 @@ namespace Rendering
         RenderingComponent::enable();
 
         model = glm::translate(glm::mat4(1), position);
-        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+        model = glm::scale(model, glm::vec3(0.7f, 0.7f, 0.7f));
         model = glm::rotate(model, 0.01f, glm::vec3(1.0f, 1.0f, 0.0f));
 
         // Update uniforms

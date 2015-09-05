@@ -46,11 +46,12 @@ namespace Rendering
 
         struct Vertex
         {
-            Vertex(glm::vec3 p, glm::vec4 c, glm::vec2 t) :
-                position(p), color(c), texture(t) {}
+            Vertex(glm::vec3 p, glm::vec4 c, glm::vec2 t, glm::vec3 n) :
+                position(p), color(c), texture(t), normal(n) {}
             glm::vec3 position;
             glm::vec4 color;
             glm::vec2 texture;
+            glm::vec3 normal;
         };
 
         /**
