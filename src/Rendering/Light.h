@@ -4,7 +4,7 @@
 #include "../Core/GameObject.h"
 #include "RenderingComponent.h"
 
-#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 
 namespace Rendering
 {
@@ -74,7 +74,7 @@ namespace Rendering
 
         void enable(const class Shader * shader);
 
-        glm::vec3 color;
+        glm::vec4 color, ambient, diffuse, specular;
     };
 }
 

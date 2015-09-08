@@ -93,9 +93,6 @@ GLuint Shader::createShader(GLenum shaderType,
     glGetShaderiv(shader, GL_COMPILE_STATUS, &compile_result);
     if (compile_result == GL_FALSE)
     {
-
-        std::cout << " shader: " << shaderName << std::endl << shader_code_ptr << std::endl;
-
         int info_log_length = 0;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &info_log_length);
         std::vector<char> shader_log(info_log_length);
@@ -121,8 +118,10 @@ bool Shader::loadUniformIndices()
     for (int uniform = 0; uniform < activeUniforms; uniform++)
     {
         glGetActiveUniformName(program_id, uniform, 50, nullptr, uniformName);
+        std::cout << uniformName << " ";
         uniforms[std::string(uniformName)] = uniform;
     }
+    std::cout << std::endl;
 
     return true;
 }

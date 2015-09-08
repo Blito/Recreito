@@ -61,7 +61,7 @@ bool Renderer::init()
     camera->position = glm::vec3(3, 3, -8);
 
     light = new Light(*this);
-    light->color = glm::vec3(1.0f, 1.0f, 1.0f);
+    light->color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
     addObjectToRender(light->renderingComponent);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

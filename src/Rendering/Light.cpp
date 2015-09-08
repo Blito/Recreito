@@ -25,7 +25,10 @@ void LightModel::enable()
 }
 
 Light::Light(Renderer & renderer)
-    : color (1.0f, 1.0f, 1.0f)
+    : color (1.0f, 1.0f, 1.0f, 1.0f),
+      ambient(1.0f, 1.0f, 1.0f, 1.0f),
+      diffuse(1.0f, 1.0f, 1.0f, 1.0f),
+      specular(1.0f, 1.0f, 1.0f, 1.0f)
 {
     renderingComponent = new Rendering::LightModel(*this);
     renderingComponent->init(renderer, "container.jpg");
@@ -33,9 +36,18 @@ Light::Light(Renderer & renderer)
 
 void Light::enable(const Shader * shader)
 {
-    GLint lightColorLoc = shader->getUniform("lightColor");
-    glUniform4f(lightColorLoc, color.x, color.y, color.z, 1.0f);
+    GLint lightColorLoc = shader->getUniform("light.color");
+    glUniform4f(lightColorLoc, color.x, color.y, color.z, color.w);
 
     GLint lightPosLoc = shader->getUniform("lightPos");
     glUniform3f(lightPosLoc, position.x, position.y, position.z);
+
+    GLint ambientLoc = glGetUniformLocation(shader->id(), "light.ambient");
+    glUniform4f(ambientLoc, ambient.x, ambient.y, ambient.z, ambient.w);
+
+    GLint diffuseLoc = glGetUniformLocation(shader->id(), "light.diffuse");
+    glUniform4f(diffuseLoc, diffuse.x, diffuse.y, diffuse.z, diffuse.w);
+
+    GLint specularLoc = glGetUniformLocation(shader->id(), "light.specular");
+    glUniform4f(specularLoc, specular.x, specular.y, specular.z, specular.w);
 }

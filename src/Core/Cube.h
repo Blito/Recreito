@@ -12,7 +12,16 @@ namespace Rendering
     {
     public:
         CubeModel(const Core::GameObject & parent)
-            : RenderingComponent(parent, "3D Simple") {}
+            : RenderingComponent(parent, "3D Simple"),
+//              ambient(0.1745f, 0.01175f, 0.01175f),
+//              diffuse(0.61424f, 0.04136f, 0.04136f),
+//              specular(0.727811f, 0.626959f, 0.626959f),
+//              shininess(0.6f)
+              ambient(0.1745, 0.01175, 0.01175, 0.55),
+              diffuse(0.61424, 0.04136, 0.04136, 0.55),
+              specular(0.727811, 0.626959, 0.626959, 0.55),
+              shininess(76.8)
+        {}
 
         void enable() override;
     protected:
@@ -65,6 +74,10 @@ namespace Rendering
 
             return model;
         }
+
+        // Material properties
+        glm::vec4 ambient, diffuse, specular;
+        float shininess;
     };
 } // end Rendering
 
