@@ -6,6 +6,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <assimp/material.h>
 
 #include <iostream>
 
@@ -55,6 +56,7 @@ Mesh * ASSIMPModelFactory::processMesh(const aiMesh * mesh, const aiScene * scen
     std::vector<unsigned int> indices;
     std::vector<Mesh::Texture> textures;
 
+    // Load vertices
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
         glm::vec3 position;
@@ -81,5 +83,37 @@ Mesh * ASSIMPModelFactory::processMesh(const aiMesh * mesh, const aiScene * scen
 
         vertices.push_back(Mesh::Vertex(position, normal, textCoord));
     }
+
+    // Load indices
+    for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+    {
+        aiFace & face = mesh->mFaces[i];
+        for (unsigned int j = 0; j < face.mNumIndices; j++)
+        {
+            indices.push_back(face.mIndices[j]);
+        }
+    }
+
+    // Load textures
+    if (mesh->mMaterialIndex > 0) // if the mesh has a texture
+    {
+        const aiMaterial * material = scene->mMaterials[mesh->mMaterialIndex];
+        auto diffuseMaps = loadTextureFromMaterial(material,
+                                                   aiTextureType_DIFFUSE,
+                                                   Mesh::Texture::Type::DIFFUSE);
+        textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+        auto specularMaps = loadTextureFromMaterial(material,
+                                                    aiTextureType_SPECULAR,
+                                                    Mesh::Texture::Type::SPECULAR);
+        textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+    }
+
+    return new Mesh(vertices, indices, textures);
 }
 
+std::vector<Mesh::Texture> ASSIMPModelFactory::loadTextureFromMaterial(const aiMaterial * material,
+                                                                 int type,
+                                                                 Mesh::Texture::Type) const
+{
+
+}
