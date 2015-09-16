@@ -112,8 +112,20 @@ Mesh * ASSIMPModelFactory::processMesh(const aiMesh * mesh, const aiScene * scen
 }
 
 std::vector<Mesh::Texture> ASSIMPModelFactory::loadTextureFromMaterial(const aiMaterial * material,
-                                                                 int type,
-                                                                 Mesh::Texture::Type) const
+                                                                 aiTextureType aiType,
+                                                                 Mesh::Texture::Type type) const
 {
+    std::vector<Mesh::Texture> textures;
 
+    for (unsigned int i = 0; i < material->GetTextureCount(aiType); i++)
+    {
+        aiString str;
+        material->GetTexture(aiType, i, &str);
+        Mesh::Texture texture;
+        texture.id = 1;
+        texture.type = type;
+        textures.push_back(texture);
+    }
+
+    return textures;
 }

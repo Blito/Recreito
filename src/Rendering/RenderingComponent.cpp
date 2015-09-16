@@ -9,22 +9,12 @@
 #include "../Mgrs/ShaderMgr.h"
 #include "Renderer.h"
 #include "Texture.h"
+#include "Model.h"
+#include "ModelFactory.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
 using namespace Rendering;
-
-RenderingComponent::RenderingComponent(const Core::GameObject & parent)
-    : position(parent.position)
-{
-
-}
-
-RenderingComponent::~RenderingComponent()
-{
-    glDeleteVertexArrays(1, &vao);
-    glDeleteBuffers(vbos.size(), &vbos[0]); // what if multiple where created?
-}
 
 RenderingComponent::RenderingComponent(const Core::GameObject & parent,
                                        const std::string & shaderProgramName)
@@ -34,78 +24,50 @@ RenderingComponent::RenderingComponent(const Core::GameObject & parent,
 
 }
 
-void RenderingComponent::init(const Renderer & renderer,
-                              const std::string & textureFile)
+RenderingComponent::~RenderingComponent()
 {
-    auto model = loadModel("");
+    delete model;
+}
 
-    if (!textureFile.empty())
-    {
-        texture = new Texture(textureFile);
-    }
+void RenderingComponent::init(const Renderer & renderer,
+                              const std::string & modelFile)
+{
+    model = loadModel(modelFile);
 
-    vertices = model.size();
-
-    if (vertices > 0)
-    {
-        modelLoaded = true;
-        gpuLoaded = loadToGPU(model);
-    }
+//    if (!textureFile.empty())
+//    {
+//        texture = new Texture(textureFile);
+//    }
 
     shaderProgram = renderer.getShaderMgr()->getProgram(shaderProgramName);
-
-    //TODO: Improve error handling.
-    if (!modelLoaded)
-        std::cout << "Could not load model." << std::endl;
-    if (!gpuLoaded)
-        std::cout << "Could not load GPU." << std::endl;
 }
 
 void RenderingComponent::enable()
 {
-    glBindVertexArray(vao);
+//    glBindVertexArray(vao);
 
-    if (texture)
-    {
-        texture->enable();
-    }
-    else
-    {
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
+//    if (texture)
+//    {
+//        texture->enable();
+//    }
+//    else
+//    {
+//        glBindTexture(GL_TEXTURE_2D, 0);
+//    }
 }
 
 void RenderingComponent::draw() const
 {
-    //draw 3 vertices as triangles
-    glDrawArrays(GL_TRIANGLES, 0, vertices);
+    if (model)
+    {
+        model->draw();
+    }
 }
 
-bool RenderingComponent::loadToGPU(const std::vector<RenderingComponent::Vertex> & model)
+Model * RenderingComponent::loadModel(const std::string & file) const
 {
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-
-    unsigned int vbo;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(RenderingComponent::Vertex) * vertices, &model[0], GL_STATIC_DRAW);
-    vbos.push_back(vbo);
-
-    constexpr unsigned int positionAttrib = 0;
-    constexpr unsigned int colorAttrib    = 1;
-    constexpr unsigned int textAttrib     = 2;
-    constexpr unsigned int normalAttrib   = 3;
-    glEnableVertexAttribArray(positionAttrib);
-    glVertexAttribPointer(positionAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(RenderingComponent::Vertex), (void*)0);
-    glEnableVertexAttribArray(colorAttrib);
-    glVertexAttribPointer(colorAttrib, 4, GL_FLOAT, GL_FALSE, sizeof(RenderingComponent::Vertex), (void*)(3*sizeof(float)));
-    glEnableVertexAttribArray(textAttrib);
-    glVertexAttribPointer(textAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(RenderingComponent::Vertex), (void*)(7*sizeof(float)));
-    glEnableVertexAttribArray(normalAttrib);
-    glVertexAttribPointer(normalAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(RenderingComponent::Vertex), (void*)(9*sizeof(float)));
-
-    return true;
+    ASSIMPModelFactory modelFactory;
+    return modelFactory.createModel(file);
 }
 
 const std::string & RenderingComponent::getShaderProgram() const

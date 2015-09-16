@@ -23,13 +23,16 @@ namespace Rendering
 
         struct Texture
         {
-            unsigned int id;
             enum class Type { DIFFUSE, SPECULAR, OTHER };
+
+            unsigned int id;
+            Type type;
         };
 
         Mesh(const std::vector<Vertex> & vertices,
              const std::vector<unsigned int> & indices,
              const std::vector<Texture> & textures);
+        virtual ~Mesh();
 
         void draw() const;
 

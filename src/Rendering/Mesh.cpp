@@ -16,6 +16,12 @@ Mesh::Mesh(const std::vector<Vertex> & vertices,
     loadToGPU();
 }
 
+Mesh::~Mesh()
+{
+    glDeleteVertexArrays(1, &vao);
+    glDeleteBuffers(1, &vbo); // what if multiple where created?
+}
+
 void Mesh::draw() const
 {
     //TODO: Enable textures

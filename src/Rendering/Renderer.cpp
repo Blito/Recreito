@@ -58,7 +58,9 @@ bool Renderer::init()
                              "../src/shaders/color.frag");
 
     camera = new Camera();
-    camera->position = glm::vec3(3, 3, -8);
+    camera->position = glm::vec3(3, 20, -15);
+
+    camera->lookAt(0, 10, 0);
 
     light = new Light(*this);
     light->color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);

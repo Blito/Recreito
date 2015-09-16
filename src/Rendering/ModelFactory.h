@@ -9,7 +9,7 @@
 class aiNode;
 class aiScene;
 class aiMesh;
-class aiMaterial;
+#include <assimp/material.h>
 
 namespace Rendering
 {
@@ -27,7 +27,7 @@ namespace Rendering
     private:
         void processNode(std::vector<Mesh *> & meshes, aiNode * node, const aiScene * scene) const;
         Mesh * processMesh(const aiMesh * mesh, const aiScene * scene) const;
-        std::vector<Mesh::Texture> loadTextureFromMaterial(const aiMaterial * material, int type, Mesh::Texture::Type) const;
+        std::vector<Mesh::Texture> loadTextureFromMaterial(const aiMaterial * material, aiTextureType aiType, Mesh::Texture::Type type) const;
     };
 } // end Rendering
 

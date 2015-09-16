@@ -2,9 +2,9 @@
 
 #include "Rendering/OpenGLInfo.h"
 #include "Rendering/Renderer.h"
-#include "Core/Triangle.h"
-#include "Core/Square.h"
-#include "Core/Cube.h"
+#include "Rendering/RenderingComponent.h"
+
+#include "Core/GameObject.h"
 
 #include <cmath>
 
@@ -34,7 +34,6 @@ void Recreito::run()
         renderer->update(1000);
 
         magicI += 0.005f;
-        cube->position = glm::vec3(5 * std::sin(magicI), 0.0f, 5 * std::cos(magicI));
     }
 
     shutdown();
@@ -51,7 +50,10 @@ bool Recreito::init()
 
     initialized = renderer->init();
 
-    initScene();
+    if (initialized)
+    {
+        initScene();
+    }
 
     return initialized;
 }
@@ -71,6 +73,10 @@ void Recreito::initScene()
 //    Core::Square * square = new Core::Square(*renderer);
 //    renderer->addObjectToRender(square->renderingComponent);
 
-    cube = new Core::Cube(*renderer);
-    renderer->addObjectToRender(cube->renderingComponent);
+//    cube = new Core::Cube(*renderer);
+//    renderer->addObjectToRender(cube->renderingComponent);
+      object = new Core::GameObject();
+      object->renderingComponent = new Rendering::RenderingComponent(*object, "Light");
+      object->renderingComponent->init(*renderer, "../resources/models/nanosuit/nanosuit.obj");
+      renderer->addObjectToRender(object->renderingComponent);
 }

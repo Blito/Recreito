@@ -16,12 +16,12 @@ void LightModel::enable()
     // Bind VAO and Texture
     RenderingComponent::enable();
 
-    model = glm::translate(glm::mat4(1), position);
-    model = glm::rotate(model, 0.01f, glm::vec3(1.0f, 1.0f, 0.0f));
+    modelMatrix = glm::translate(glm::mat4(1), position);
+    modelMatrix = glm::rotate(modelMatrix, 0.01f, glm::vec3(1.0f, 1.0f, 0.0f));
 
     // Update uniforms
     GLint modelLoc = glGetUniformLocation(shaderProgram->id(), "model");
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 }
 
 Light::Light(Renderer & renderer)

@@ -24,11 +24,12 @@ namespace Rendering
     class RenderingComponent
     {
     public:
-        RenderingComponent(const Core::GameObject & parent);
+        RenderingComponent(const Core::GameObject & parent,
+                           const std::string & shaderProgramName);
         ~RenderingComponent();
 
         void init(const class Renderer & renderer,
-                  const std::string & textureFile);
+                  const std::string & modelFile);
 
         /**
          * @brief enable Binds the GPU buffers to this object.
@@ -41,9 +42,6 @@ namespace Rendering
         const std::string & getShaderProgram() const;
 
     protected:
-        RenderingComponent(const Core::GameObject & parent,
-                           const std::string & shaderProgramName);
-
         struct Vertex
         {
             Vertex(glm::vec3 p, glm::vec4 c, glm::vec2 t, glm::vec3 n) :
@@ -55,24 +53,13 @@ namespace Rendering
         };
 
         /**
-         * @brief loadToGPU Creates buffers and binds the model to them.
-         * @param model The created model.
-         * @return true if load was successful.
-         * @sa loadModel
-         */
-        bool loadToGPU(const std::vector<Vertex> & model);
-
-        /**
          * @brief loadModel Loads the model from a file.
          */
-        virtual std::vector<Vertex> loadModel(const char * file) const = 0;
+        virtual class Model * loadModel(const std::string & file) const;
 
-        unsigned int vao;
-        std::vector<unsigned int> vbos;
         unsigned int vertices = 0;
-        bool modelLoaded = false;
-        bool gpuLoaded = false;
 
+        class Model * model = nullptr;
         class Texture * texture = nullptr;
         const class Shader * shaderProgram = nullptr;
 
@@ -80,7 +67,7 @@ namespace Rendering
 
         const glm::vec3 & position;
 
-        glm::mat4 model;
+        glm::mat4 modelMatrix;
 
     };
 

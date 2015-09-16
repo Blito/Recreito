@@ -8,7 +8,7 @@ namespace Rendering
 }
 namespace Core
 {
-    class Cube;
+    class GameObject;
 }
 
 /**
@@ -31,7 +31,7 @@ protected:
 
     Rendering::Renderer * renderer;
 
-    Core::Cube * cube = nullptr;
+    Core::GameObject * object = nullptr;
 
 private:
     void initScene();
