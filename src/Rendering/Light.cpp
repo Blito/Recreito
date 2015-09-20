@@ -30,6 +30,7 @@ Light::Light(Renderer & renderer)
       diffuse(1.0f, 1.0f, 1.0f, 1.0f),
       specular(1.0f, 1.0f, 1.0f, 1.0f)
 {
+    position = glm::vec3(0.0f, 0.0f, 0.0f);
     renderingComponent = new Rendering::LightModel(*this);
     renderingComponent->init(renderer, "container.jpg");
 }

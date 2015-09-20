@@ -79,4 +79,10 @@ void Recreito::initScene()
       object->renderingComponent = new Rendering::RenderingComponent(*object, "Light");
       object->renderingComponent->init(*renderer, "../resources/models/nanosuit/nanosuit.obj");
       renderer->addObjectToRender(object->renderingComponent);
+
+      object2 = new Core::GameObject();
+      object2->position = glm::vec3(10, 0, 0);
+      object2->renderingComponent = new Rendering::RenderingComponent(*object2, "3D Simple");
+      object2->renderingComponent->init(*renderer, "../resources/models/nanosuit/nanosuit.obj");
+      renderer->addObjectToRender(object2->renderingComponent);
 }

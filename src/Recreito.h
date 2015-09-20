@@ -32,6 +32,7 @@ protected:
     Rendering::Renderer * renderer;
 
     Core::GameObject * object = nullptr;
+    Core::GameObject * object2 = nullptr;
 
 private:
     void initScene();

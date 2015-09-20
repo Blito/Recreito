@@ -16,6 +16,7 @@ set(RECREITO_THIRD_PARTY_LIBS_DIR "${CMAKE_SOURCE_DIR}/lib")
         "src/*/*.h"
         "src/*/*.cpp"
         "src/[!main]*.cpp"
+        "src/shaders/*"
     )
         add_library(recreito_lib STATIC ${recreito_SRC})
         add_executable(recreito src/main.cpp)

@@ -51,11 +51,11 @@ bool Renderer::init()
 
     shaderMgr->createProgram("3D Simple",
                              "../src/shaders/3d.vert",
-                             "../src/shaders/color_light.frag");
+                             "../src/shaders/color.frag");
 
     shaderMgr->createProgram("Light",
                              "../src/shaders/3d.vert",
-                             "../src/shaders/color.frag");
+                             "../src/shaders/color_light.frag");
 
     camera = new Camera();
     camera->position = glm::vec3(3, 20, -15);
@@ -111,6 +111,11 @@ void Renderer::update(float millis)
             object->draw();
         }
     }
+
+    camera->position = glm::vec3(5*std::sin(magicI), 10, -10*std::cos(magicI));
+    magicI += 0.005;
+
+    light->position = glm::vec3(8, 20*std::sin(magicI/2.0)+10, 20*std::cos(magicI/2.0f));
 
     SDL_GL_SwapWindow(window);
 }

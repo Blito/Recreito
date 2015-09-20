@@ -14,7 +14,7 @@ namespace Rendering
     {
     public:
         LightModel(const Core::GameObject & parent)
-            : RenderingComponent(parent, "Light") {}
+            : RenderingComponent(parent, "3D Simple") {}
 
         void enable() override;
     protected:

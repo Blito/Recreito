@@ -17,7 +17,6 @@ struct Light
 
 layout(location = 0) out vec4 out_color;
 
-in vec4 objectColor;
 in vec2 textCoord;
 in vec3 normal;
 in vec3 fragPos;
@@ -26,11 +25,17 @@ uniform sampler2D ourSampler;
 uniform vec4 lightColor;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
-uniform Material material;
 uniform Light light;
 
 void main(void)
 {
+    Material material;
+    material.ambient = vec4(1.0, 0.4, 0.1, 1.0);
+    material.diffuse = vec4(0.8, 0.5, 0.3, 1.0);
+    material.specular = vec4(1.0, 0.7, 0.6, 0.7);
+    material.shininess = 0.7;
+
+    vec3 lightP = vec3(0.0f, 30.0f, 0.0f);
     // Ambient light component
     vec4 ambientLight = light.ambient * material.ambient * light.color;
 
@@ -46,5 +51,5 @@ void main(void)
     float specular = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     vec4 specularLight = light.specular * material.specular * specular * light.color;
 
-    out_color = (ambientLight + diffuseLight + specularLight) * objectColor;
+    out_color = (ambientLight + diffuseLight + specularLight) * vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }

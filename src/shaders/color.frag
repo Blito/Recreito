@@ -5,5 +5,5 @@ in vec4 objectColor;
 
 void main(void)
 {
-    out_color = objectColor;
+    out_color = vec4(1.0f, 0.6f, 0.2f, 1.0f);
 }

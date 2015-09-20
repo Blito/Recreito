@@ -9,10 +9,12 @@
 #include "../Mgrs/ShaderMgr.h"
 #include "Renderer.h"
 #include "Texture.h"
+#include "Shader.h"
 #include "Model.h"
 #include "ModelFactory.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace Rendering;
 
@@ -44,6 +46,10 @@ void RenderingComponent::init(const Renderer & renderer,
 
 void RenderingComponent::enable()
 {
+    modelMatrix = glm::translate(glm::mat4(1), position);
+
+    GLint modelLoc = glGetUniformLocation(shaderProgram->id(), "model");
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 //    glBindVertexArray(vao);
 
 //    if (texture)

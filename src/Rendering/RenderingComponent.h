@@ -61,7 +61,7 @@ namespace Rendering
 
         class Model * model = nullptr;
         class Texture * texture = nullptr;
-        const class Shader * shaderProgram = nullptr;
+        class Shader * shaderProgram = nullptr;
 
         std::string shaderProgramName;
 
