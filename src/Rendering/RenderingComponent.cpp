@@ -48,18 +48,8 @@ void RenderingComponent::enable()
 {
     modelMatrix = glm::translate(glm::mat4(1), position);
 
-    GLint modelLoc = glGetUniformLocation(shaderProgram->id(), "model");
+    GLint modelLoc = shaderProgram->getUniform("model");
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
-//    glBindVertexArray(vao);
-
-//    if (texture)
-//    {
-//        texture->enable();
-//    }
-//    else
-//    {
-//        glBindTexture(GL_TEXTURE_2D, 0);
-//    }
 }
 
 void RenderingComponent::draw() const
