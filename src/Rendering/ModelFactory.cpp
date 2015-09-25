@@ -54,7 +54,7 @@ Mesh * ASSIMPModelFactory::processMesh(const aiMesh * mesh, const aiScene * scen
 {
     std::vector<Mesh::Vertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<Mesh::Texture> textures;
+    std::vector<Texture*> textures;
 
     // Load vertices
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
@@ -100,30 +100,29 @@ Mesh * ASSIMPModelFactory::processMesh(const aiMesh * mesh, const aiScene * scen
         const aiMaterial * material = scene->mMaterials[mesh->mMaterialIndex];
         auto diffuseMaps = loadTextureFromMaterial(material,
                                                    aiTextureType_DIFFUSE,
-                                                   Mesh::Texture::Type::DIFFUSE);
+                                                   Texture::Type::DIFFUSE);
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
         auto specularMaps = loadTextureFromMaterial(material,
                                                     aiTextureType_SPECULAR,
-                                                    Mesh::Texture::Type::SPECULAR);
+                                                    Texture::Type::SPECULAR);
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
     }
 
     return new Mesh(vertices, indices, textures);
 }
 
-std::vector<Mesh::Texture> ASSIMPModelFactory::loadTextureFromMaterial(const aiMaterial * material,
-                                                                 aiTextureType aiType,
-                                                                 Mesh::Texture::Type type) const
+std::vector<Texture*> ASSIMPModelFactory::loadTextureFromMaterial(const aiMaterial * material,
+                                                                  aiTextureType aiType,
+                                                                  Texture::Type type) const
 {
-    std::vector<Mesh::Texture> textures;
+    std::vector<Texture*> textures;
 
     for (unsigned int i = 0; i < material->GetTextureCount(aiType); i++)
     {
         aiString str;
         material->GetTexture(aiType, i, &str);
-        Mesh::Texture texture;
-        texture.id = 1;
-        texture.type = type;
+        std::string filePath(str.C_Str());
+        Texture * texture = new Texture(filePath, type);
         textures.push_back(texture);
     }
 

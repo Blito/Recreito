@@ -1,15 +1,16 @@
 #version 430 core
 struct Material
 {
-    vec4 ambient;
-    vec4 diffuse;
-    vec4 specular;
+    sampler2D texture_diffuse_1;
+    sampler2D texture_diffuse_2;
+    sampler2D texture_diffuse_3;
+    sampler2D texture_specular_1;
+    sampler2D texture_specular_2;
     float shininess;
 };
 
 struct Light
 {
-    vec4 color;
     vec4 ambient;
     vec4 diffuse;
     vec4 specular;
@@ -21,35 +22,33 @@ in vec2 textCoord;
 in vec3 normal;
 in vec3 fragPos;
 
-uniform sampler2D ourSampler;
 uniform vec4 lightColor;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform Light light;
+uniform Material material;
 
 void main(void)
 {
-    Material material;
-    material.ambient = vec4(1.0, 0.4, 0.1, 1.0);
-    material.diffuse = vec4(0.8, 0.5, 0.3, 1.0);
-    material.specular = vec4(1.0, 0.7, 0.6, 0.7);
-    material.shininess = 0.7;
-
-    vec3 lightP = vec3(0.0f, 30.0f, 0.0f);
     // Ambient light component
-    vec4 ambientLight = light.ambient * material.ambient * light.color;
+    vec4 ambientLight = light.ambient * vec4(texture(material.texture_diffuse_1, textCoord));
 
     // Diffuse light component
     vec3 norm = normalize(normal);
     vec3 lightDir = normalize(lightPos - fragPos);
     float diffuse = max(dot(norm, lightDir), 0.0);
-    vec4 diffuseLight = light.diffuse * material.diffuse * diffuse * light.color;
+    vec4 diffuseLight = light.diffuse * vec4(texture(material.texture_diffuse_1, textCoord)) * diffuse;
 
     // Specular light component
     vec3 viewDir = normalize(viewPos - fragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float specular = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    vec4 specularLight = light.specular * material.specular * specular * light.color;
+    vec4 specularLight = light.specular * vec4(texture(material.texture_specular_1, textCoord)) * specular;
 
-    out_color = (ambientLight + diffuseLight + specularLight) * vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    vec4 specularFixed = vec4(max(specularLight.x, 0.0),
+                              max(specularLight.y, 0.0),
+                              max(specularLight.z, 0.0),
+                              1.0);
+
+    out_color = ambientLight + diffuseLight + specularFixed;
 }

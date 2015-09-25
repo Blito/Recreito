@@ -31,7 +31,7 @@ namespace Rendering
 
         void enable(const class Shader * shader);
 
-        glm::vec4 color, ambient, diffuse, specular;
+        glm::vec4 ambient, diffuse, specular;
     };
 }
 

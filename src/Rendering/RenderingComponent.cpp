@@ -66,7 +66,7 @@ void RenderingComponent::draw() const
 {
     if (model)
     {
-        model->draw();
+        model->draw(shaderProgram);
     }
 }
 

@@ -53,7 +53,7 @@ GLint Shader::getUniform(const std::string & uniformName) const
     auto uniform = uniforms.find(uniformName);
 //    if (uniform == uniforms.end())
 //        std::cout << "Uniform " << uniformName << " not found." << std::endl;
-    return uniform == uniforms.end() ? 0 : uniform->second;
+    return uniform == uniforms.end() ? -1 : uniform->second;
 }
 
 void Shader::enable()
@@ -118,7 +118,7 @@ bool Shader::loadUniformIndices()
     for (int uniform = 0; uniform < activeUniforms; uniform++)
     {
         glGetActiveUniformName(program_id, uniform, 50, nullptr, uniformName);
-        std::cout << uniformName << " ";
+        std::cout << uniformName << " at " << uniform << std::endl;
         uniforms[std::string(uniformName)] = uniform;
     }
     std::cout << std::endl;

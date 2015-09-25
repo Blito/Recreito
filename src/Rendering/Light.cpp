@@ -24,11 +24,10 @@ void LightModel::enable()
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 }
 
-Light::Light(Renderer & renderer)
-    : color (1.0f, 1.0f, 1.0f, 1.0f),
-      ambient(1.0f, 1.0f, 1.0f, 1.0f),
-      diffuse(1.0f, 1.0f, 1.0f, 1.0f),
-      specular(1.0f, 1.0f, 1.0f, 1.0f)
+Light::Light(Renderer & renderer) :
+      ambient(0.2f, 0.2f, 0.2f, 1.0f),
+      diffuse(0.7f, 0.7f, 0.7f, 1.0f),
+      specular(0.1f, 0.1f, 0.1f, 1.0f)
 {
     position = glm::vec3(0.0f, 0.0f, 0.0f);
     renderingComponent = new Rendering::LightModel(*this);
@@ -37,18 +36,15 @@ Light::Light(Renderer & renderer)
 
 void Light::enable(const Shader * shader)
 {
-    GLint lightColorLoc = shader->getUniform("light.color");
-    glUniform4f(lightColorLoc, color.x, color.y, color.z, color.w);
-
     GLint lightPosLoc = shader->getUniform("lightPos");
     glUniform3f(lightPosLoc, position.x, position.y, position.z);
 
-    GLint ambientLoc = glGetUniformLocation(shader->id(), "light.ambient");
+    GLint ambientLoc = shader->getUniform("light.ambient");
     glUniform4f(ambientLoc, ambient.x, ambient.y, ambient.z, ambient.w);
 
-    GLint diffuseLoc = glGetUniformLocation(shader->id(), "light.diffuse");
+    GLint diffuseLoc = shader->getUniform("light.diffuse");
     glUniform4f(diffuseLoc, diffuse.x, diffuse.y, diffuse.z, diffuse.w);
 
-    GLint specularLoc = glGetUniformLocation(shader->id(), "light.specular");
+    GLint specularLoc = shader->getUniform("light.specular");
     glUniform4f(specularLoc, specular.x, specular.y, specular.z, specular.w);
 }

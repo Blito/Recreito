@@ -1,8 +1,11 @@
 #include "Texture.h"
 
+#include <iostream>
+
 using namespace Rendering;
 
-Texture::Texture(const std::string & filename)
+Texture::Texture(const std::string & filename, Type type) :
+    type(type)
 {
     loadTexture(filename);
 }
@@ -12,12 +15,24 @@ void Texture::enable() const
     glBindTexture(GL_TEXTURE_2D, id);
 }
 
+void Texture::enable(GLuint textureUnit,
+                     GLuint samplerUniformLocation) const
+{
+    glActiveTexture(GL_TEXTURE0 + textureUnit);
+    glBindTexture(GL_TEXTURE_2D, id);
+    glUniform1i(samplerUniformLocation, textureUnit);
+}
+
 void Texture::loadTexture(const std::string & filename)
 {
     // Load file to array in memory
-    unsigned char * image = SOIL_load_image(filename.c_str(),
+    std::string aux = "../resources/models/nanosuit/" + filename;
+    unsigned char * image = SOIL_load_image(aux.c_str(),
                                             &width, &height, 0,
                                             SOIL_LOAD_RGB);
+
+    if (image == 0)
+        std::cout << "Texture could not be loaded." << std::endl;
 
     glGenTextures(1, &id);
     glBindTexture(GL_TEXTURE_2D, id);

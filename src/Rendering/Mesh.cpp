@@ -3,11 +3,17 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
+#include "Texture.h"
+#include "Shader.h"
+
+#include <sstream>
+#include <iostream>
+
 using namespace Rendering;
 
 Mesh::Mesh(const std::vector<Vertex> & vertices,
            const std::vector<unsigned int> & indices,
-           const std::vector<Texture> & textures)
+           const std::vector<Texture*> & textures)
 {
     this->vertices = vertices;
     this->indices = indices;
@@ -22,10 +28,31 @@ Mesh::~Mesh()
     glDeleteBuffers(1, &vbo); // what if multiple where created?
 }
 
-void Mesh::draw() const
+void Mesh::draw(const Shader * shader) const
 {
-    //TODO: Enable textures
+    // Enable textures
+    unsigned int diffuseCount = 1, specularCount = 1;
+    for (unsigned int i = 0; i < textures.size(); i++)
+    {
+        std::stringstream ss;
+        ss << "material.";
+        switch (textures[i]->getType()) {
+        case Texture::Type::DIFFUSE:
+            ss << "texture_diffuse_" << diffuseCount++;
+            break;
+        case Texture::Type::SPECULAR:
+        default:
+            ss << "texture_specular_" << specularCount++;
+            break;
+        }
+        GLint location = shader->getUniform(ss.str());
+        if (location >= 0)
+        {
+            textures[i]->enable(i, location);
+        }
+    }
 
+    // Draw the mesh
     glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);

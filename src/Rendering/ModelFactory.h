@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Mesh.h"
+#include "Texture.h"
 
 class aiNode;
 class aiScene;
@@ -27,7 +28,7 @@ namespace Rendering
     private:
         void processNode(std::vector<Mesh *> & meshes, aiNode * node, const aiScene * scene) const;
         Mesh * processMesh(const aiMesh * mesh, const aiScene * scene) const;
-        std::vector<Mesh::Texture> loadTextureFromMaterial(const aiMaterial * material, aiTextureType aiType, Mesh::Texture::Type type) const;
+        std::vector<Texture*> loadTextureFromMaterial(const aiMaterial * material, aiTextureType aiType, Texture::Type type) const;
     };
 } // end Rendering
 

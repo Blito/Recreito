@@ -1,6 +1,7 @@
 #include "Model.h"
 
 #include "Mesh.h"
+#include "Shader.h"
 
 using namespace Rendering;
 
@@ -17,10 +18,10 @@ Model::~Model()
     }
 }
 
-void Model::draw() const
+void Model::draw(Shader * shader) const
 {
     for (auto mesh : meshes)
     {
-        mesh->draw();
+        mesh->draw(shader);
     }
 }

@@ -9,6 +9,8 @@
 
 namespace Rendering
 {
+    class Texture;
+    class Shader;
     class Mesh
     {
     public:
@@ -21,25 +23,17 @@ namespace Rendering
             glm::vec2 texture;
         };
 
-        struct Texture
-        {
-            enum class Type { DIFFUSE, SPECULAR, OTHER };
-
-            unsigned int id;
-            Type type;
-        };
-
         Mesh(const std::vector<Vertex> & vertices,
              const std::vector<unsigned int> & indices,
-             const std::vector<Texture> & textures);
+             const std::vector<Texture*> & textures);
         virtual ~Mesh();
 
-        void draw() const;
+        void draw(const Shader * shader) const;
 
     protected:
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
-        std::vector<Texture> textures;
+        std::vector<Texture*> textures; //< For now, the Mesh is responsible for deleting these objects
 
         unsigned int vao, vbo, ebo;
 
