@@ -28,7 +28,7 @@ Mesh::~Mesh()
     glDeleteBuffers(1, &vbo); // what if multiple where created?
 }
 
-void Mesh::draw(const Shader * shader) const
+void Mesh::draw(const Shader & shader) const
 {
     // Enable textures
     unsigned int diffuseCount = 1, specularCount = 1;
@@ -45,7 +45,7 @@ void Mesh::draw(const Shader * shader) const
             ss << "texture_specular_" << specularCount++;
             break;
         }
-        GLint location = shader->getUniform(ss.str());
+        GLint location = shader.getUniform(ss.str());
         if (location >= 0)
         {
             textures[i]->enable(i, location);

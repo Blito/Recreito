@@ -46,7 +46,6 @@ namespace Rendering
          */
         bool loadUniformIndices();
         bool uniformsLoaded = false;
-
     };
 } // end Rendering
 

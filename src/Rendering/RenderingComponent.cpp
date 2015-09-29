@@ -19,8 +19,10 @@
 using namespace Rendering;
 
 RenderingComponent::RenderingComponent(const Core::GameObject & parent,
-                                       const std::string & shaderProgramName)
-    : shaderProgramName(shaderProgramName),
+                                       const Shader & shaderProgram,
+                                       const Mesh * mesh)
+    : mesh(mesh),
+      shaderProgram(shaderProgram),
       position(parent.position)
 {
 
@@ -28,35 +30,24 @@ RenderingComponent::RenderingComponent(const Core::GameObject & parent,
 
 RenderingComponent::~RenderingComponent()
 {
-    delete model;
-}
-
-void RenderingComponent::init(const Renderer & renderer,
-                              const std::string & modelFile)
-{
-    model = loadModel(modelFile);
-
-//    if (!textureFile.empty())
-//    {
-//        texture = new Texture(textureFile);
-//    }
-
-    shaderProgram = renderer.getShaderMgr()->getProgram(shaderProgramName);
-}
-
-void RenderingComponent::enable()
-{
-    modelMatrix = glm::translate(glm::mat4(1), position);
-
-    GLint modelLoc = shaderProgram->getUniform("model");
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 }
 
 void RenderingComponent::draw() const
 {
-    if (model)
+    // Send uniform values to GPU
+    auto modelMatrix = glm::translate(glm::mat4(1), position);
+
+    GLint modelLoc = shaderProgram.getUniform("model");
+
+    if (modelLoc > -1)
     {
-        model->draw(shaderProgram);
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+    }
+
+    // Draw the mesh associated with this element
+    if (mesh)
+    {
+        mesh->draw(shaderProgram);
     }
 }
 
@@ -66,7 +57,7 @@ Model * RenderingComponent::loadModel(const std::string & file) const
     return modelFactory.createModel(file);
 }
 
-const std::string & RenderingComponent::getShaderProgram() const
+const Shader & RenderingComponent::getShaderProgram() const
 {
-    return shaderProgramName;
+    return shaderProgram;
 }

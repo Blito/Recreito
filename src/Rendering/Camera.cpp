@@ -10,7 +10,8 @@
 
 using namespace Rendering;
 
-Camera::Camera()
+Camera::Camera() :
+    Core::GameObject(nullptr)
 {
     up = glm::vec3(0.0f, 1.0f, 0.0f);
     target = glm::vec3(0.0f, 0.0f, 0.0f);

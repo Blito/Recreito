@@ -12,7 +12,7 @@ namespace Rendering
         Model(const std::vector<Mesh*> & meshes);
         ~Model();
 
-        void draw(class Shader * shader) const;
+        std::vector<Mesh*> getMeshes() const { return meshes; }
 
     protected:
         std::vector<Mesh*> meshes;

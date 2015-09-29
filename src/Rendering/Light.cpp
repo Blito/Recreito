@@ -11,27 +11,34 @@
 
 using namespace Rendering;
 
-void LightModel::enable()
+LightModel::LightModel(const Core::GameObject &parent,
+                       const Shader &shaderProgram) :
+    RenderingComponent(parent, shaderProgram, nullptr)
 {
-    // Bind VAO and Texture
-    RenderingComponent::enable();
-
     modelMatrix = glm::translate(glm::mat4(1), position);
     modelMatrix = glm::rotate(modelMatrix, 0.01f, glm::vec3(1.0f, 1.0f, 0.0f));
-
-    // Update uniforms
-    GLint modelLoc = glGetUniformLocation(shaderProgram->id(), "model");
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 }
 
-Light::Light(Renderer & renderer) :
-      ambient(0.2f, 0.2f, 0.2f, 1.0f),
-      diffuse(0.7f, 0.7f, 0.7f, 1.0f),
-      specular(0.1f, 0.1f, 0.1f, 1.0f)
+void LightModel::draw() const
+{
+    // Bind VAO and Texture
+    RenderingComponent::draw();
+
+    // Update uniforms
+    GLint modelLoc = shaderProgram.getUniform("model");
+    if (modelLoc != -1)
+    {
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+    }
+}
+
+Light::Light(const Shader * shader, const Model * model) :
+    Core::GameObject(shader, model),
+    ambient(0.2f, 0.2f, 0.2f, 1.0f),
+    diffuse(0.7f, 0.7f, 0.7f, 1.0f),
+    specular(0.1f, 0.1f, 0.1f, 1.0f)
 {
     position = glm::vec3(0.0f, 0.0f, 0.0f);
-    renderingComponent = new Rendering::LightModel(*this);
-    renderingComponent->init(renderer, "container.jpg");
 }
 
 void Light::enable(const Shader * shader)

@@ -16,6 +16,9 @@ namespace Core
 
 namespace Rendering
 {
+    class Mesh;
+    class Shader;
+
     /**
      * @brief The RenderingComponent class is responsible for loading the
      * representation of a renderable object, generating, binding and populating
@@ -25,21 +28,13 @@ namespace Rendering
     {
     public:
         RenderingComponent(const Core::GameObject & parent,
-                           const std::string & shaderProgramName);
+                           const Shader & shaderProgram,
+                           const Mesh * mesh = nullptr);
         ~RenderingComponent();
 
-        void init(const class Renderer & renderer,
-                  const std::string & modelFile);
+        virtual void draw() const;
 
-        /**
-         * @brief enable Binds the GPU buffers to this object.
-         * @note Does not check correct initialization of the object.
-         */
-        virtual void enable();
-
-        void draw() const;
-
-        const std::string & getShaderProgram() const;
+        const Shader & getShaderProgram() const;
 
     protected:
         struct Vertex
@@ -61,10 +56,9 @@ namespace Rendering
 
         class Model * model = nullptr;
         class Texture * texture = nullptr;
-        class Shader * shaderProgram = nullptr;
 
-        std::string shaderProgramName;
-
+        const Mesh * mesh = nullptr;
+        const Shader & shaderProgram;
         const glm::vec3 & position;
 
         glm::mat4 modelMatrix;

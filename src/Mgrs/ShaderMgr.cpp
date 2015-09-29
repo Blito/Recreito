@@ -2,6 +2,8 @@
 
 #include "../Rendering/Shader.h"
 
+#include <iostream>
+
 using namespace Mgrs;
 
 ShaderMgr::~ShaderMgr()
@@ -19,6 +21,11 @@ Rendering::Shader * ShaderMgr::getProgram(const std::string & programName) const
     return shader != programs.end() ? shader->second : nullptr;
 }
 
+Rendering::Shader * ShaderMgr::getDefaultProgram() const
+{
+    return getProgram(defaultProgram);
+}
+
 GLuint ShaderMgr::getProgramID(const std::string & programName) const
 {
     auto p = programs.find(programName);
@@ -28,8 +35,10 @@ GLuint ShaderMgr::getProgramID(const std::string & programName) const
 
 Rendering::Shader *ShaderMgr::createProgram(const std::string & programName,
                                 const std::string & vertexShaderFileName,
-                                const std::string & fragmentShaderFileName)
+                                const std::string & fragmentShaderFileName,
+                                bool setAsDefault)
 {
+    std::cout << programName << std::endl;
     // check for existing program
     auto program = getProgram(programName);
     if (program)
@@ -43,6 +52,11 @@ Rendering::Shader *ShaderMgr::createProgram(const std::string & programName,
     if (program->id())
     {
         programs[programName] = program;
+    }
+
+    if (setAsDefault)
+    {
+        defaultProgram = programName;
     }
 
     return program;

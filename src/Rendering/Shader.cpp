@@ -114,7 +114,7 @@ bool Shader::loadUniformIndices()
         return false;
 
     // Iterate over active uniforms, query their names and fill cache
-    char uniformName[50];
+    char uniformName[50] {0};
     for (int uniform = 0; uniform < activeUniforms; uniform++)
     {
         glGetActiveUniformName(program_id, uniform, 50, nullptr, uniformName);

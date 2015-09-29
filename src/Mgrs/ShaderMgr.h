@@ -20,15 +20,20 @@ namespace Mgrs
 
         Rendering::Shader * getProgram(const std::string & programName) const;
 
+        Rendering::Shader * getDefaultProgram() const;
+
         GLuint getProgramID(const std::string & programName) const;
 
         Rendering::Shader * createProgram(
                                 const std::string & programName,
                                 const std::string & vertexShaderFileName,
-                                const std::string & fragmentShaderFileName);
+                                const std::string & fragmentShaderFileName,
+                                bool setAsDefault = false);
 
     private:
         std::map<std::string, Rendering::Shader*> programs;
+
+        std::string defaultProgram = "";
     };
 }
 

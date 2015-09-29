@@ -13,21 +13,17 @@ namespace Rendering
     class LightModel : public Rendering::RenderingComponent
     {
     public:
-        LightModel(const Core::GameObject & parent)
-            : RenderingComponent(parent, "3D Simple") {}
+        LightModel(const Core::GameObject & parent,
+                   const Shader & shaderProgram);
 
-        void enable() override;
-    protected:
-        Model * loadModel(const std::string & file) const override
-        {
-            return nullptr;
-        }
+        virtual void draw() const override;
     };
 
     class Light : public Core::GameObject
     {
     public:
-        Light(class Renderer & renderer);
+        Light(const Rendering::Shader * shader,
+              const Rendering::Model * model = nullptr);
 
         void enable(const class Shader * shader);
 

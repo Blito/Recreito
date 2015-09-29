@@ -41,29 +41,32 @@ bool Renderer::init()
 
     shaderMgr = new Mgrs::ShaderMgr();
 
-    shaderMgr->createProgram("Simple",
+    auto names = new std::string[4] { "Simple", "Textured", "3D Simple", "Light" };
+
+    shaderMgr->createProgram(names[0],
                              "../src/shaders/2d.vert",
                              "../src/shaders/color.frag");
 
-    shaderMgr->createProgram("Textured",
+    shaderMgr->createProgram(names[1],
                              "../src/shaders/2d.vert",
                              "../src/shaders/texture.frag");
 
-    shaderMgr->createProgram("3D Simple",
+    shaderMgr->createProgram(names[2],
                              "../src/shaders/3d.vert",
                              "../src/shaders/color.frag");
 
-    shaderMgr->createProgram("Light",
+    shaderMgr->createProgram(names[3],
                              "../src/shaders/3d.vert",
-                             "../src/shaders/color_light.frag");
+                             "../src/shaders/color_light.frag",
+                             true /*setAsDefault*/);
 
     camera = new Camera();
     camera->position = glm::vec3(3, 20, -15);
 
     camera->lookAt(0, 10, 0);
 
-    light = new Light(*this);
-    addObjectToRender(light->renderingComponent);
+    light = new Light(shaderMgr->getProgram("Light"));
+    addObjectToRender(light->getRenderingComponents()[0]);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -106,7 +109,6 @@ void Renderer::update(float millis)
 
         for (auto object : shader_object.second)
         {
-            object->enable();
             object->draw();
         }
     }
@@ -137,19 +139,8 @@ bool Renderer::shutdown()
 
 void Renderer::addObjectToRender(RenderingComponent * object)
 {
-    auto shader = shaderMgr->getProgram(object->getShaderProgram());
-    if (shader)
-    {
-        toRender[shader].push_back(object);
-    }
-    else
-    {
-        // TODO: Improve error handling
-        std::cout << "ShaderMgr: ERROR: Trying to add rendering "
-                  << "object with invalid shader program (name: "
-                  << object->getShaderProgram() << ")"
-                  << std::endl;
-    }
+    auto shader = object->getShaderProgram();
+    toRender[&shader].push_back(object);
 }
 
 const Mgrs::ShaderMgr * Renderer::getShaderMgr() const

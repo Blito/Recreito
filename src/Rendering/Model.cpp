@@ -17,11 +17,3 @@ Model::~Model()
         delete mesh;
     }
 }
-
-void Model::draw(Shader * shader) const
-{
-    for (auto mesh : meshes)
-    {
-        mesh->draw(shader);
-    }
-}

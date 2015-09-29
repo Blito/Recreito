@@ -8,6 +8,7 @@ namespace Rendering
 }
 namespace Core
 {
+    class Scene;
     class GameObject;
 }
 
@@ -29,10 +30,9 @@ protected:
     bool initialized = false;
     bool deinitialized = false;
 
-    Rendering::Renderer * renderer;
+    Core::Scene * scene = nullptr;
 
-    Core::GameObject * object = nullptr;
-    Core::GameObject * object2 = nullptr;
+    Rendering::Renderer * renderer = nullptr;
 
 private:
     void initScene();

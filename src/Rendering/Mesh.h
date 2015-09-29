@@ -28,7 +28,7 @@ namespace Rendering
              const std::vector<Texture*> & textures);
         virtual ~Mesh();
 
-        void draw(const Shader * shader) const;
+        void draw(const Shader & shader) const;
 
     protected:
         std::vector<Vertex> vertices;

@@ -3,8 +3,13 @@
 #include "Rendering/OpenGLInfo.h"
 #include "Rendering/Renderer.h"
 #include "Rendering/RenderingComponent.h"
+#include "Rendering/ModelFactory.h"
+#include "Rendering/Model.h"
+
+#include "Mgrs/ShaderMgr.h"
 
 #include "Core/GameObject.h"
+#include "Core/Scene.h"
 
 #include <cmath>
 
@@ -67,22 +72,22 @@ bool Recreito::shutdown()
 
 void Recreito::initScene()
 {
-//    Core::Triangle * triangle= new Core::Triangle(*renderer);
-//    renderer->addObjectToRender(triangle->renderingComponent);
+    scene = new Core::Scene();
 
-//    Core::Square * square = new Core::Square(*renderer);
-//    renderer->addObjectToRender(square->renderingComponent);
+    Rendering::ASSIMPModelFactory modelFactory;
+    auto model = modelFactory.createModel("../resources/models/nanosuit/nanosuit.obj");
 
-//    cube = new Core::Cube(*renderer);
-//    renderer->addObjectToRender(cube->renderingComponent);
-      object = new Core::GameObject();
-      object->renderingComponent = new Rendering::RenderingComponent(*object, "Light");
-      object->renderingComponent->init(*renderer, "../resources/models/nanosuit/nanosuit.obj");
-      renderer->addObjectToRender(object->renderingComponent);
+    auto object = new Core::GameObject(renderer->getShaderMgr()->getDefaultProgram(), model);
+    scene->addGameObject(object);
 
-      object2 = new Core::GameObject();
-      object2->position = glm::vec3(10, 0, 0);
-      object2->renderingComponent = new Rendering::RenderingComponent(*object2, "3D Simple");
-      object2->renderingComponent->init(*renderer, "../resources/models/nanosuit/nanosuit.obj");
-      renderer->addObjectToRender(object2->renderingComponent);
+    object = new Core::GameObject(renderer->getShaderMgr()->getProgram("3D Simple"),
+                                  model);
+    object->position = glm::vec3(10, 0, 0);
+    scene->addGameObject(object);
+
+    auto renderingComponents = scene->getRenderingComponents();
+    for (auto renderingComponent : renderingComponents)
+    {
+        renderer->addObjectToRender(renderingComponent);
+    }
 }
