@@ -61,9 +61,9 @@ bool Renderer::init()
                              true /*setAsDefault*/);
 
     camera = new Camera();
-    camera->position = glm::vec3(3, 20, -15);
+    camera->position = glm::vec3(-10, 20, -10);
 
-    camera->lookAt(0, 10, 0);
+    camera->lookAt(0, 15, 0);
 
     light = new Light(shaderMgr->getProgram("Light"));
     addObjectToRender(light->getRenderingComponents()[0]);
@@ -94,7 +94,7 @@ void Renderer::update(float millis)
     }
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.3, 0.5, 0.5, 1.0);
+    glClearColor(0.1, 0.1, 0.1, 1.0);
 
     for (auto & shader_object : toRender)
     {
@@ -113,7 +113,7 @@ void Renderer::update(float millis)
         }
     }
 
-    camera->position = glm::vec3(5*std::sin(magicI), 10, -10*std::cos(magicI));
+    //camera->position = glm::vec3(20*std::sin(magicI), 25, -20*std::cos(magicI));
     magicI += 0.005;
 
     light->position = glm::vec3(8, 20*std::sin(magicI/2.0)+10, 20*std::cos(magicI/2.0f));

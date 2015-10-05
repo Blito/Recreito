@@ -77,13 +77,23 @@ void Recreito::initScene()
     Rendering::ASSIMPModelFactory modelFactory;
     auto model = modelFactory.createModel("../resources/models/nanosuit/nanosuit.obj");
 
-    auto object = new Core::GameObject(renderer->getShaderMgr()->getDefaultProgram(), model);
-    scene->addGameObject(object);
+//    auto object = new Core::GameObject(renderer->getShaderMgr()->getDefaultProgram(), model);
+//    scene->addGameObject(object);
 
-    object = new Core::GameObject(renderer->getShaderMgr()->getProgram("3D Simple"),
-                                  model);
-    object->position = glm::vec3(10, 0, 0);
-    scene->addGameObject(object);
+//    object = new Core::GameObject(renderer->getShaderMgr()->getProgram("3D Simple"),
+//                                  model);
+//    object->position = glm::vec3(10, 0, 0);
+//    scene->addGameObject(object);
+
+    for (int x = -4; x < 4; x++)
+    {
+        for (int y = -4; y < 4; y++)
+        {
+            auto object = new Core::GameObject(renderer->getShaderMgr()->getDefaultProgram(), model);
+            object->position = glm::vec3(x*10, 0, y*10);
+            scene->addGameObject(object);
+        }
+    }
 
     auto renderingComponents = scene->getRenderingComponents();
     for (auto renderingComponent : renderingComponents)
