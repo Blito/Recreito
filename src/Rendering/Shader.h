@@ -26,7 +26,7 @@ namespace Rendering
 
         GLint getUniform(const std::string & uniformName) const;
 
-        void enable();
+        void enable() const;
 
     protected:
         GLuint program_id = 0;

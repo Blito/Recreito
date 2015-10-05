@@ -139,8 +139,8 @@ bool Renderer::shutdown()
 
 void Renderer::addObjectToRender(RenderingComponent * object)
 {
-    auto shader = object->getShaderProgram();
-    toRender[&shader].push_back(object);
+    const Shader * shader = &object->getShaderProgram();
+    toRender[shader].push_back(object);
 }
 
 const Mgrs::ShaderMgr * Renderer::getShaderMgr() const
@@ -148,7 +148,7 @@ const Mgrs::ShaderMgr * Renderer::getShaderMgr() const
     return shaderMgr;
 }
 
-void Renderer::setProjMatrix(Shader * shader)
+void Renderer::setProjMatrix(const Shader * shader)
 {
     GLint projLoc = shader->getUniform(projUniformName);
 

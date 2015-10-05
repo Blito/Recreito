@@ -41,7 +41,7 @@ Rendering::Shader *ShaderMgr::createProgram(const std::string & programName,
     std::cout << programName << std::endl;
     // check for existing program
     auto program = getProgram(programName);
-    if (program)
+    if (program > 0)
         return program;
 
     program = new Rendering::Shader(*this,

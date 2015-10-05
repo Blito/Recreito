@@ -41,6 +41,12 @@ Shader::Shader(Mgrs::ShaderMgr & shaderMgr,
         std::cout << "Shader Loader : LINK ERROR" << std::endl << &program_log[0] << std::endl;
         program_id = 0;
     }
+    else
+    {
+        std::cout << "Program created: id:" << program_id << ", shaders:" << vertex_shader << " " << fragment_shader << std::endl;
+    }
+
+    uniformsLoaded = loadUniformIndices();
 }
 
 GLuint Shader::id() const
@@ -51,19 +57,13 @@ GLuint Shader::id() const
 GLint Shader::getUniform(const std::string & uniformName) const
 {
     auto uniform = uniforms.find(uniformName);
-//    if (uniform == uniforms.end())
-//        std::cout << "Uniform " << uniformName << " not found." << std::endl;
+
     return uniform == uniforms.end() ? -1 : uniform->second;
 }
 
-void Shader::enable()
+void Shader::enable() const
 {
     glUseProgram(program_id);
-
-    if (!uniformsLoaded)
-    {
-        uniformsLoaded = loadUniformIndices();
-    }
 }
 
 std::string Shader::readShaderFile(const std::string & fileName) const
@@ -106,6 +106,7 @@ GLuint Shader::createShader(GLenum shaderType,
 
 bool Shader::loadUniformIndices()
 {
+    glUseProgram(program_id);
     //Get number of active uniforms
     GLint activeUniforms;
     glGetProgramiv(program_id, GL_ACTIVE_UNIFORMS, &activeUniforms);
@@ -113,15 +114,19 @@ bool Shader::loadUniformIndices()
     if (activeUniforms == 0)
         return false;
 
+    std::cout << activeUniforms << " active uniforms detected." << std::endl;
     // Iterate over active uniforms, query their names and fill cache
     char uniformName[50] {0};
     for (int uniform = 0; uniform < activeUniforms; uniform++)
     {
         glGetActiveUniformName(program_id, uniform, 50, nullptr, uniformName);
+        uniformName[50] = '\0';
         std::cout << uniformName << " at " << uniform << std::endl;
-        uniforms[std::string(uniformName)] = uniform;
+        std::string unifName(uniformName);
+        uniforms[unifName] = uniform;
     }
     std::cout << std::endl;
 
+    glUseProgram(0);
     return true;
 }

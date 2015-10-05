@@ -10,7 +10,6 @@
 #include "OpenGLInfo.h"
 
 #include <vector>
-#include <map>
 #include <unordered_map>
 
 #include <glm/mat4x4.hpp>
@@ -42,7 +41,7 @@ namespace Rendering
         const Mgrs::ShaderMgr * getShaderMgr() const;
 
     protected:
-        void setProjMatrix(Shader * shader);
+        void setProjMatrix(const Shader * shader);
 
         const WindowInfo & windowInfo;
         class SDL_Window * window;
@@ -58,7 +57,7 @@ namespace Rendering
 
         class Camera * camera;
         class Light * light;
-        std::map<Shader*, std::vector<RenderingComponent*>> toRender;
+        std::unordered_map<const Shader *, std::vector<RenderingComponent*>> toRender;
 
         glm::mat4 proj;
         float fovDeg, nearPlane, farPlane;
