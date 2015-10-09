@@ -28,6 +28,9 @@ namespace Rendering
         void enable(const class Shader * shader);
 
         glm::vec4 ambient, diffuse, specular;
+
+        // Attenuation properties
+        float constant, linear, quadratic;
     };
 }
 

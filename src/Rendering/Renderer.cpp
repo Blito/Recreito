@@ -5,6 +5,7 @@
 #include "RenderingComponent.h"
 #include "Camera.h"
 #include "Light.h"
+#include "ModelFactory.h"
 #include "../Mgrs/ShaderMgr.h"
 #include "../Rendering/Shader.h"
 
@@ -65,7 +66,10 @@ bool Renderer::init()
 
     camera->lookAt(0, 15, 0);
 
-    light = new Light(shaderMgr->getProgram("Light"));
+    ASSIMPModelFactory modelFactory;
+    auto model = modelFactory.createModel("../resources/models/muffin/muffin.obj");
+
+    light = new Light(shaderMgr->getProgram("Light"),model);
     addObjectToRender(light->getRenderingComponents()[0]);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -116,7 +120,9 @@ void Renderer::update(float millis)
     //camera->position = glm::vec3(20*std::sin(magicI), 25, -20*std::cos(magicI));
     magicI += 0.005;
 
-    light->position = glm::vec3(8, 20*std::sin(magicI/2.0)+10, 20*std::cos(magicI/2.0f));
+    light->position = glm::vec3(20*std::sin(magicI/2.0)+8, 10, 20*std::cos(magicI/2.0f));
+
+    camera->lookAt(light->position.x, light->position.y, light->position.z);
 
     SDL_GL_SwapWindow(window);
 }

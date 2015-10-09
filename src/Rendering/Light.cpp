@@ -36,14 +36,17 @@ Light::Light(const Shader * shader, const Model * model) :
     Core::GameObject(shader, model),
     ambient(0.2f, 0.2f, 0.2f, 1.0f),
     diffuse(0.7f, 0.7f, 0.7f, 1.0f),
-    specular(0.1f, 0.1f, 0.1f, 1.0f)
+    specular(0.1f, 0.1f, 0.1f, 1.0f),
+    constant(1.0f),
+    linear(0.09f),
+    quadratic(0.032f)
 {
     position = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
 void Light::enable(const Shader * shader)
 {
-    GLint lightPosLoc = shader->getUniform("lightPos");
+    GLint lightPosLoc = shader->getUniform("light.position");
     glUniform3f(lightPosLoc, position.x, position.y, position.z);
 
     GLint ambientLoc = shader->getUniform("light.ambient");
@@ -54,4 +57,13 @@ void Light::enable(const Shader * shader)
 
     GLint specularLoc = shader->getUniform("light.specular");
     glUniform4f(specularLoc, specular.x, specular.y, specular.z, specular.w);
+
+    GLint constantLoc = shader->getUniform("light.constant");
+    glUniform1f(constantLoc, constant);
+
+    GLint linearLoc = shader->getUniform("light.linear");
+    glUniform1f(linearLoc, linear);
+
+    GLint quadraticLoc = shader->getUniform("light.quadratic");
+    glUniform1f(quadraticLoc, quadratic);
 }

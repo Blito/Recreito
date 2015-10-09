@@ -11,9 +11,15 @@ struct Material
 
 struct Light
 {
+    vec3 position;
+
     vec4 ambient;
     vec4 diffuse;
     vec4 specular;
+
+    float constant;
+    float linear;
+    float quadratic;
 };
 
 layout(location = 0) out vec4 out_color;
@@ -23,19 +29,22 @@ in vec3 normal;
 in vec3 fragPos;
 
 uniform vec4 lightColor;
-uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform Light light;
 uniform Material material;
 
 void main(void)
 {
+    float lightDistance = length(light.position - fragPos);
+    float attenuation = 1.0f / (light.constant + light.linear * lightDistance +
+                                light.quadratic * (lightDistance * lightDistance));
+
     // Ambient light component
     vec4 ambientLight = light.ambient * vec4(texture(material.texture_diffuse_1, textCoord));
 
     // Diffuse light component
     vec3 norm = normalize(normal);
-    vec3 lightDir = normalize(lightPos - fragPos);
+    vec3 lightDir = normalize(light.position - fragPos);
     float diffuse = max(dot(norm, lightDir), 0.0);
     vec4 diffuseLight = light.diffuse * vec4(texture(material.texture_diffuse_1, textCoord)) * diffuse;
 
@@ -50,5 +59,5 @@ void main(void)
                               max(specularLight.z, 0.0),
                               1.0);
 
-    out_color = ambientLight + diffuseLight + specularFixed;
+    out_color = attenuation * (ambientLight + diffuseLight + specularFixed);
 }
