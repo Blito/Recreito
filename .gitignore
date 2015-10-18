@@ -3,3 +3,6 @@ build/
 
 # Third party libs directory
 lib/
+
+# Qt files
+*.txt.user
