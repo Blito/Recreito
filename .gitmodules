@@ -1,9 +1,11 @@
 [submodule "lib/glew"]
 	path = lib/glew
 	url = https://github.com/nigels-com/glew.git
+        ignore = dirty
 [submodule "lib/soil"]
 	path = lib/soil
 	url = https://github.com/kbranigan/Simple-OpenGL-Image-Library.git
+        ignore = dirty
 [submodule "lib/assimp"]
 	path = lib/assimp
 	url = https://github.com/assimp/assimp.git
