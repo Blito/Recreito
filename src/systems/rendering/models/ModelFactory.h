@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "Mesh.h"
-#include "Texture.h"
+#include "../Texture.h"
 
 class aiNode;
 class aiScene;

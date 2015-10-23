@@ -1,12 +1,12 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
-#include "../Core/GameObject.h"
+#include "../../core/GameObject.h"
 #include "RenderingComponent.h"
 
 #include <glm/vec4.hpp>
 
-#include "Model.h"
+#include "models/Model.h"
 
 namespace Rendering
 {

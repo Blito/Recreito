@@ -3,7 +3,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
-#include "Shader.h"
+#include "shaders/Shader.h"
 #include "Renderer.h"
 
 #include <glm/gtc/type_ptr.hpp>

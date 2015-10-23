@@ -5,7 +5,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "../Mgrs/ShaderMgr.h"
+#include "ShaderMgr.h"
 
 using namespace Rendering;
 

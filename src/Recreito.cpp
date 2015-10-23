@@ -1,15 +1,15 @@
 #include "Recreito.h"
 
-#include "Rendering/OpenGLInfo.h"
-#include "Rendering/Renderer.h"
-#include "Rendering/RenderingComponent.h"
-#include "Rendering/ModelFactory.h"
-#include "Rendering/Model.h"
+#include "systems/rendering/OpenGLInfo.h"
+#include "systems/rendering/Renderer.h"
+#include "systems/rendering/RenderingComponent.h"
+#include "systems/rendering/models/ModelFactory.h"
+#include "systems/rendering/models/Model.h"
 
-#include "Mgrs/ShaderMgr.h"
+#include "systems/rendering/shaders/ShaderMgr.h"
 
-#include "Core/GameObject.h"
-#include "Core/Scene.h"
+#include "core/GameObject.h"
+#include "core/Scene.h"
 
 #include <cmath>
 

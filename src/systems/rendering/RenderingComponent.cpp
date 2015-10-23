@@ -5,13 +5,13 @@
 
 #include <iostream>
 
-#include "../Core/GameObject.h"
-#include "../Mgrs/ShaderMgr.h"
+#include "../../core/GameObject.h"
+#include "shaders/ShaderMgr.h"
 #include "Renderer.h"
 #include "Texture.h"
-#include "Shader.h"
-#include "Model.h"
-#include "ModelFactory.h"
+#include "shaders/Shader.h"
+#include "models/Model.h"
+#include "models/ModelFactory.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>

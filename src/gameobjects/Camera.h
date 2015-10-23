@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "../Core/GameObject.h"
+#include "../core/GameObject.h"
 
 #include <map>
 #include <glm/mat4x4.hpp>

@@ -13,10 +13,12 @@ set(RECREITO_THIRD_PARTY_LIBS_DIR "${CMAKE_SOURCE_DIR}/lib")
     # Add all files to build target, excluding main.cpp
     file(GLOB recreito_SRC
         "src/*.h"
-        "src/*/*.h"
-        "src/*/*.cpp"
+        "src/core/*.*"
+        "src/gameobjects/*.*"
+        "src/systems/rendering/*.*"
+        "src/systems/rendering/models/*.*"
+        "src/systems/rendering/shaders/*.*"
         "src/[!main]*.cpp"
-        "src/shaders/*"
     )
         add_library(recreito_lib STATIC ${recreito_SRC})
         add_executable(recreito src/main.cpp)

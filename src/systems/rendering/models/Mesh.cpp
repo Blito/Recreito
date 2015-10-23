@@ -3,8 +3,8 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
-#include "Texture.h"
-#include "Shader.h"
+#include "../Texture.h"
+#include "../shaders/Shader.h"
 
 #include <sstream>
 #include <iostream>

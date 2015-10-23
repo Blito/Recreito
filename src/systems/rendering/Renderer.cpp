@@ -3,11 +3,11 @@
 #include <iostream>
 
 #include "RenderingComponent.h"
-#include "Camera.h"
+#include "../../gameobjects/Camera.h"
 #include "Light.h"
-#include "ModelFactory.h"
-#include "../Mgrs/ShaderMgr.h"
-#include "../Rendering/Shader.h"
+#include "models/ModelFactory.h"
+#include "shaders/ShaderMgr.h"
+#include "shaders/Shader.h"
 
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -45,20 +45,20 @@ bool Renderer::init()
     auto names = new std::string[4] { "Simple", "Textured", "3D Simple", "Light" };
 
     shaderMgr->createProgram(names[0],
-                             "../src/shaders/2d.vert",
-                             "../src/shaders/color.frag");
+                             "../src/systems/rendering/shaders/2d.vert",
+                             "../src/systems/rendering/shaders/color.frag");
 
     shaderMgr->createProgram(names[1],
-                             "../src/shaders/2d.vert",
-                             "../src/shaders/texture.frag");
+                             "../src/systems/rendering/shaders/2d.vert",
+                             "../src/systems/rendering/shaders/texture.frag");
 
     shaderMgr->createProgram(names[2],
-                             "../src/shaders/3d.vert",
-                             "../src/shaders/color.frag");
+                             "../src/systems/rendering/shaders/3d.vert",
+                             "../src/systems/rendering/shaders/color.frag");
 
     shaderMgr->createProgram(names[3],
-                             "../src/shaders/3d.vert",
-                             "../src/shaders/color_light.frag",
+                             "../src/systems/rendering/shaders/3d.vert",
+                             "../src/systems/rendering/shaders/color_light.frag",
                              true /*setAsDefault*/);
 
     camera = new Camera();

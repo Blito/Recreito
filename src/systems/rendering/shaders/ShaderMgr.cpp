@@ -1,6 +1,6 @@
 #include "ShaderMgr.h"
 
-#include "../Rendering/Shader.h"
+#include "Shader.h"
 
 #include <iostream>
 

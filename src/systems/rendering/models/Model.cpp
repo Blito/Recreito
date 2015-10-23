@@ -1,7 +1,7 @@
 #include "Model.h"
 
 #include "Mesh.h"
-#include "Shader.h"
+#include "../shaders/Shader.h"
 
 using namespace Rendering;
 

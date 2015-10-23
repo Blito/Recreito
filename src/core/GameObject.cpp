@@ -1,8 +1,8 @@
 #include "GameObject.h"
 
-#include "../Rendering/Model.h"
-#include "../Rendering/RenderingComponent.h"
-#include "../Rendering/Shader.h"
+#include "../systems/rendering/models/Model.h"
+#include "../systems/rendering/RenderingComponent.h"
+#include "../systems/rendering/shaders/Shader.h"
 
 using namespace Core;
 
