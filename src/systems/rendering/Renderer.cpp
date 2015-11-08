@@ -113,7 +113,7 @@ void Renderer::update(float millis)
 
         for (auto object : shader_object.second)
         {
-            object->draw();
+            draw(*object);
         }
     }
 
@@ -145,13 +145,32 @@ bool Renderer::shutdown()
 
 void Renderer::addObjectToRender(RenderingComponent * object)
 {
-    const Shader * shader = &object->getShaderProgram();
+    const Shader * shader = &object->shaderProgram;
     toRender[shader].push_back(object);
 }
 
 const Mgrs::ShaderMgr * Renderer::getShaderMgr() const
 {
     return shaderMgr;
+}
+
+void Renderer::draw(RenderingComponent & object)
+{
+    // Send uniform values to GPU
+    auto modelMatrix = glm::translate(glm::mat4(1), object.position);
+
+    GLint modelLoc = object.shaderProgram.getUniform("model");
+
+    if (modelLoc > -1)
+    {
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+    }
+
+    // Draw the mesh associated with this element
+    if (object.mesh)
+    {
+        object.mesh->draw(object.shaderProgram);
+    }
 }
 
 void Renderer::setProjMatrix(const Shader * shader)

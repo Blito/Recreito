@@ -15,8 +15,6 @@ namespace Rendering
     public:
         LightModel(const Core::GameObject & parent,
                    const Shader & shaderProgram);
-
-        virtual void draw() const override;
     };
 
     class Light : public Core::GameObject

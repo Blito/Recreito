@@ -32,32 +32,9 @@ RenderingComponent::~RenderingComponent()
 {
 }
 
-void RenderingComponent::draw() const
-{
-    // Send uniform values to GPU
-    auto modelMatrix = glm::translate(glm::mat4(1), position);
-
-    GLint modelLoc = shaderProgram.getUniform("model");
-
-    if (modelLoc > -1)
-    {
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
-    }
-
-    // Draw the mesh associated with this element
-    if (mesh)
-    {
-        mesh->draw(shaderProgram);
-    }
-}
 
 Model * RenderingComponent::loadModel(const std::string & file) const
 {
     ASSIMPModelFactory modelFactory;
     return modelFactory.createModel(file);
-}
-
-const Shader & RenderingComponent::getShaderProgram() const
-{
-    return shaderProgram;
 }

@@ -32,11 +32,8 @@ namespace Rendering
                            const Mesh * mesh = nullptr);
         ~RenderingComponent();
 
-        virtual void draw() const;
+        const Shader & shaderProgram;
 
-        const Shader & getShaderProgram() const;
-
-    protected:
         struct Vertex
         {
             Vertex(glm::vec3 p, glm::vec4 c, glm::vec2 t, glm::vec3 n) :
@@ -58,7 +55,6 @@ namespace Rendering
         class Texture * texture = nullptr;
 
         const Mesh * mesh = nullptr;
-        const Shader & shaderProgram;
         const glm::vec3 & position;
 
         glm::mat4 modelMatrix;

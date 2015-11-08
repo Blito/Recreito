@@ -41,6 +41,8 @@ namespace Rendering
         const Mgrs::ShaderMgr * getShaderMgr() const;
 
     protected:
+        void draw(RenderingComponent & object);
+
         void setProjMatrix(const Shader * shader);
 
         const WindowInfo & windowInfo;

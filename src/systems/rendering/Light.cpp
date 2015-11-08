@@ -19,19 +19,6 @@ LightModel::LightModel(const Core::GameObject &parent,
     modelMatrix = glm::rotate(modelMatrix, 0.01f, glm::vec3(1.0f, 1.0f, 0.0f));
 }
 
-void LightModel::draw() const
-{
-    // Bind VAO and Texture
-    RenderingComponent::draw();
-
-    // Update uniforms
-    GLint modelLoc = shaderProgram.getUniform("model");
-    if (modelLoc != -1)
-    {
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
-    }
-}
-
 Light::Light(const Shader * shader, const Model * model) :
     Core::GameObject(shader, model),
     ambient(0.2f, 0.2f, 0.2f, 1.0f),
