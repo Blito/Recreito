@@ -1,32 +1,27 @@
 #include "GameObject.h"
 
 #include "../systems/rendering/models/Model.h"
+#include "../systems/rendering/Renderer.h"
 #include "../systems/rendering/RenderingComponent.h"
 #include "../systems/rendering/shaders/Shader.h"
 
 using namespace Core;
 
-GameObject::GameObject(const Rendering::Shader * shader, const Rendering::Model * model) :
-    model(model)
+void GameObject::addRenderingComponent(Rendering::Renderer & renderer, const Rendering::Shader & shader, const Rendering::Model * model)
 {
-    if (shader)
+    this->model = model;
+    if (model)
     {
-        if (model)
+        auto meshes = model->getMeshes();
+        for (auto mesh : meshes)
         {
-            auto meshes = model->getMeshes();
-            for (auto mesh : meshes)
-            {
-                 renderingComponents.push_back(new Rendering::RenderingComponent(*this, *shader, mesh));
-            }
-        }
-        else
-        {
-            renderingComponents.push_back(new Rendering::RenderingComponent(*this, *shader, nullptr));
+            //auto newComp = renderer.newComponent(*this, shader, mesh);
+            renderingComponents.push_back(renderer.newComponent(*this, shader, mesh));
         }
     }
-}
-
-std::vector<Rendering::RenderingComponent*> GameObject::getRenderingComponents() const
-{
-    return renderingComponents;
+    else
+    {
+        //auto newComp = renderer.newComponent(*this, shader, nullptr);
+        renderingComponents.push_back(renderer.newComponent(*this, shader, nullptr));
+    }
 }

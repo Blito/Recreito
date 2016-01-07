@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <memory>
 
 #include <glm/mat4x4.hpp>
 
@@ -19,10 +20,16 @@ namespace Mgrs
     class ShaderMgr;
 }
 
+namespace Core
+{
+    class GameObject;
+}
+
 namespace Rendering
 {
     class RenderingComponent;
     class Shader;
+    class Mesh;
     class Renderer
     {
     public:
@@ -34,7 +41,12 @@ namespace Rendering
         void update(float millis);
         bool shutdown();
 
-        void addObjectToRender(RenderingComponent * object);
+        /**
+         * @brief newComponent Creates a new RenderingComponent
+         */
+        std::unique_ptr<RenderingComponent> newComponent(const Core::GameObject & parent,
+                                                         const Shader & shaderProgram,
+                                                         const Mesh * mesh = nullptr);
 
         bool isQuit() const { return shouldQuit; }
 

@@ -19,8 +19,7 @@ LightModel::LightModel(const Core::GameObject &parent,
     modelMatrix = glm::rotate(modelMatrix, 0.01f, glm::vec3(1.0f, 1.0f, 0.0f));
 }
 
-Light::Light(const Shader * shader, const Model * model) :
-    Core::GameObject(shader, model),
+Light::Light(Renderer & renderer, const Shader & shader, const Model * model) :
     ambient(0.2f, 0.2f, 0.2f, 1.0f),
     diffuse(0.7f, 0.7f, 0.7f, 1.0f),
     specular(0.1f, 0.1f, 0.1f, 1.0f),
@@ -28,6 +27,7 @@ Light::Light(const Shader * shader, const Model * model) :
     linear(0.09f),
     quadratic(0.032f)
 {
+    addRenderingComponent(renderer, shader, model);
     position = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 

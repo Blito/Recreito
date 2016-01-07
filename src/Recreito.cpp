@@ -89,15 +89,10 @@ void Recreito::initScene()
     {
         for (int y = -4; y < 4; y++)
         {
-            auto object = new Core::GameObject(renderer->getShaderMgr()->getDefaultProgram(), model);
+            auto object = new Core::GameObject();
+            object->addRenderingComponent(*renderer, *renderer->getShaderMgr()->getDefaultProgram(), model);
             object->position = glm::vec3(x*10, 0, y*10);
             scene->addGameObject(object);
         }
-    }
-
-    auto renderingComponents = scene->getRenderingComponents();
-    for (auto renderingComponent : renderingComponents)
-    {
-        renderer->addObjectToRender(renderingComponent);
     }
 }

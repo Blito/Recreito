@@ -2,6 +2,7 @@
 #define SCENE_H
 
 #include <vector>
+#include <memory>
 
 namespace Rendering
 {
@@ -20,7 +21,6 @@ namespace Core
         std::vector<GameObject*> getGameObjects() const;
         void addGameObject(GameObject * gameObject);
 
-        std::vector<Rendering::RenderingComponent*> getRenderingComponents() const;
 
     protected:
         std::vector<GameObject*> gameObjects;

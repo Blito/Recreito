@@ -26,10 +26,9 @@ namespace Rendering
      */
     class RenderingComponent
     {
+        friend class Renderer;
+
     public:
-        RenderingComponent(const Core::GameObject & parent,
-                           const Shader & shaderProgram,
-                           const Mesh * mesh = nullptr);
         ~RenderingComponent();
 
         const Shader & shaderProgram;
@@ -59,6 +58,14 @@ namespace Rendering
 
         glm::mat4 modelMatrix;
 
+    protected:
+        /**
+         * @brief RenderingComponent Only Renderer is able to create new RenderingComponents
+         * @sa Renderer::newComponent
+         */
+        RenderingComponent(const Core::GameObject & parent,
+                           const Shader & shaderProgram,
+                           const Mesh * mesh = nullptr);
     };
 
 } // end Rendering

@@ -69,8 +69,7 @@ bool Renderer::init()
     ASSIMPModelFactory modelFactory;
     auto model = modelFactory.createModel("../resources/models/muffin/muffin.obj");
 
-    light = new Light(shaderMgr->getProgram("Light"),model);
-    addObjectToRender(light->getRenderingComponents()[0]);
+    light = new Light(*this, *shaderMgr->getProgram("Light"),model);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -143,10 +142,16 @@ bool Renderer::shutdown()
     return deinitialized;
 }
 
-void Renderer::addObjectToRender(RenderingComponent * object)
+std::unique_ptr<RenderingComponent> Renderer::newComponent(const Core::GameObject & parent,
+                                                           const Shader & shaderProgram,
+                                                           const Mesh * mesh)
 {
-    const Shader * shader = &object->shaderProgram;
-    toRender[shader].push_back(object);
+    auto component = std::unique_ptr<RenderingComponent>(new RenderingComponent(parent, shaderProgram, mesh));
+
+    // Add it to rendering list
+    toRender[&shaderProgram].push_back(component.get());
+
+    return component;
 }
 
 const Mgrs::ShaderMgr * Renderer::getShaderMgr() const

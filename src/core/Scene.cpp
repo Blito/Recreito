@@ -18,16 +18,3 @@ void Scene::addGameObject(GameObject * gameObject)
 {
     gameObjects.push_back(gameObject);
 }
-
-std::vector<Rendering::RenderingComponent*> Scene::getRenderingComponents() const
-{
-    std::vector<Rendering::RenderingComponent*> renderingComponents;
-    for (auto gameObject : gameObjects)
-    {
-        auto objectRenderingComponents = gameObject->getRenderingComponents();
-        renderingComponents.insert(renderingComponents.end(),
-                                   objectRenderingComponents.begin(),
-                                   objectRenderingComponents.end());
-    }
-    return renderingComponents;
-}

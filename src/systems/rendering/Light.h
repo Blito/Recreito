@@ -20,7 +20,8 @@ namespace Rendering
     class Light : public Core::GameObject
     {
     public:
-        Light(const Rendering::Shader * shader,
+        Light(Renderer & renderer,
+              const Shader & shader,
               const Rendering::Model * model = nullptr);
 
         void enable(const class Shader * shader);
