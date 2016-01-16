@@ -48,8 +48,6 @@ namespace Rendering
                                                          const Shader & shaderProgram,
                                                          const Mesh * mesh = nullptr);
 
-        bool isQuit() const { return shouldQuit; }
-
         const Mgrs::ShaderMgr * getShaderMgr() const;
 
     protected:
@@ -65,7 +63,6 @@ namespace Rendering
 
         bool initialized = false;
         bool deinitialized = false;
-        bool shouldQuit = false;
 
         Mgrs::ShaderMgr * shaderMgr;
 

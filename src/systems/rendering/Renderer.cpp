@@ -84,18 +84,6 @@ bool Renderer::init()
 
 void Renderer::update(float millis)
 {
-    SDL_Event event;
-    /* Check for new events */
-    while(SDL_PollEvent(&event))
-    {
-        /* If a quit event has been sent */
-        if (event.type == SDL_QUIT)
-        {
-            /* Quit the application */
-            shouldQuit = true;
-        }
-    }
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.1, 0.1, 0.1, 1.0);
 

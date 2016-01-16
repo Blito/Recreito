@@ -10,6 +10,7 @@ namespace Core
 {
     class Scene;
     class GameObject;
+    class InputManager;
 }
 
 /**
@@ -32,6 +33,8 @@ protected:
 
     Core::Scene * scene = nullptr;
 
+    // Update these every loop
+    Core::InputManager * inputManager = nullptr;
     Rendering::Renderer * renderer = nullptr;
 
 private:

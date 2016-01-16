@@ -10,6 +10,7 @@
 
 #include "core/GameObject.h"
 #include "core/Scene.h"
+#include "core/InputManager.h"
 
 #include <cmath>
 
@@ -34,9 +35,11 @@ void Recreito::run()
         return;
     }
 
-    while (!renderer->isQuit())
+    constexpr float timeElapsed = 1000.0f;
+    while (!inputManager->isQuit())
     {
-        renderer->update(1000);
+        inputManager->update(timeElapsed);
+        renderer->update(timeElapsed);
 
         magicI += 0.005f;
     }
@@ -51,9 +54,11 @@ bool Recreito::init()
                                  100, 100,
                                  false);
     Rendering::ContextInfo context(4, 3, true);
-    renderer = new Rendering::Renderer(window, context);
 
+    renderer = new Rendering::Renderer(window, context);
     initialized = renderer->init();
+
+    inputManager = new Core::InputManager();
 
     if (initialized)
     {
@@ -76,14 +81,6 @@ void Recreito::initScene()
 
     Rendering::ASSIMPModelFactory modelFactory;
     auto model = modelFactory.createModel("../resources/models/nanosuit/nanosuit.obj");
-
-//    auto object = new Core::GameObject(renderer->getShaderMgr()->getDefaultProgram(), model);
-//    scene->addGameObject(object);
-
-//    object = new Core::GameObject(renderer->getShaderMgr()->getProgram("3D Simple"),
-//                                  model);
-//    object->position = glm::vec3(10, 0, 0);
-//    scene->addGameObject(object);
 
     for (int x = -4; x < 4; x++)
     {
