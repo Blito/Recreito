@@ -12,6 +12,10 @@ namespace Core
     class GameObject;
     class InputManager;
 }
+namespace Behavior
+{
+    class BehaviorSystem;
+}
 
 /**
  * @brief The Recreito class is the starting point for any application.
@@ -36,6 +40,7 @@ protected:
     // Update these every loop
     Core::InputManager * inputManager = nullptr;
     Rendering::Renderer * renderer = nullptr;
+    Behavior::BehaviorSystem * behaviorSystem = nullptr;
 
 private:
     void initScene();

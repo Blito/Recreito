@@ -7,7 +7,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
 set(RECREITO_THIRD_PARTY_LIBS_DIR "${CMAKE_SOURCE_DIR}/lib")
 
 # C++11 support
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++14")
 
 # Create targets
     # Add all files to build target, excluding main.cpp
@@ -18,6 +18,7 @@ set(RECREITO_THIRD_PARTY_LIBS_DIR "${CMAKE_SOURCE_DIR}/lib")
         "src/systems/rendering/*.*"
         "src/systems/rendering/models/*.*"
         "src/systems/rendering/shaders/*.*"
+        "src/systems/behavior/*.*"
         "src/[!main]*.cpp"
     )
         add_library(recreito_lib STATIC ${recreito_SRC})

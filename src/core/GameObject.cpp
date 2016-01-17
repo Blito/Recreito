@@ -4,6 +4,7 @@
 #include "../systems/rendering/Renderer.h"
 #include "../systems/rendering/RenderingComponent.h"
 #include "../systems/rendering/shaders/Shader.h"
+#include "../systems/behavior/BehaviorSystem.h"
 
 using namespace Core;
 
@@ -24,4 +25,9 @@ void GameObject::addRenderingComponent(Rendering::Renderer & renderer, const Ren
         //auto newComp = renderer.newComponent(*this, shader, nullptr);
         renderingComponents.push_back(renderer.newComponent(*this, shader, nullptr));
     }
+}
+
+void GameObject::addBehaviorComponent(Behavior::BehaviorSystem & system, std::function<void()> & behavior)
+{
+    behaviorComponents.push_back(system.newComponent(behavior));
 }
